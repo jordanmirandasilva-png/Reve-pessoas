@@ -1,0 +1,1877 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#1E293B" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Rêve • Gestão de Pessoas</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #F8FAFC;
+      color: #0F172A;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, .font-display {
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    }
+
+    .hidden { display: none !important; }
+    .tabular-nums { font-variant-numeric: tabular-nums; }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+    .animate-shake {
+      animation: shake 0.35s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.22s ease-out forwards;
+    }
+
+    .keypad-btn {
+      transition: transform 0.08s ease, background-color 0.12s ease;
+      user-select: none;
+    }
+    .keypad-btn:active {
+      transform: scale(0.94);
+      background-color: #E2E8F0;
+    }
+
+    .pb-safe {
+      padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+    }
+  </style>
+</head>
+<body class="bg-[#F8FAFC] text-slate-900 antialiased selection:bg-emerald-100 selection:text-emerald-900">
+
+  <!-- CONTAINER MOBILE-FIRST -->
+  <div id="app" class="min-h-screen flex flex-col max-w-md mx-auto bg-white sm:my-4 sm:min-h-[calc(100vh-2rem)] sm:rounded-3xl sm:border sm:border-slate-200 sm:shadow-sm overflow-x-hidden relative">
+
+    <!-- =========================================================
+         0. PRIMEIRO ACESSO (CRIAÇÃO DO PIN DO GESTOR DE RH)
+    ========================================================== -->
+    <section id="view-setup-rh" class="hidden flex-1 flex flex-col justify-between p-6 bg-gradient-to-b from-slate-50 via-white to-slate-50/70 animate-fade-in">
+      <div class="text-center pt-6">
+        <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[#1E293B] text-white font-display font-extrabold text-2xl shadow-md mb-3">
+          R
+        </div>
+        <span class="inline-block px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-[11px] font-bold uppercase tracking-wider mb-2">
+          Primeiro Acesso • RH
+        </span>
+        <h1 class="text-xl font-extrabold tracking-tight text-[#1E293B]">Configurar Acesso RH</h1>
+        <p class="text-xs text-slate-500 mt-1.5 leading-relaxed max-w-xs mx-auto">
+          Crie seu PIN de 4 dígitos para proteger os dados dos colaboradores, faltas, atestados e horas extras.
+        </p>
+      </div>
+
+      <form id="form-setup-rh" class="space-y-4 my-6">
+        <div>
+          <label for="setup-company-name" class="block text-xs font-bold text-slate-700 mb-1">Empresa / Loja</label>
+          <input
+            type="text"
+            id="setup-company-name"
+            value="Rêve"
+            required
+            maxlength="30"
+            class="w-full px-4 py-3 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-bold text-[#1E293B] focus:bg-white focus:border-[#1E293B] outline-none"
+          />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="setup-rh-pin" class="block text-xs font-bold text-slate-700 mb-1">Seu PIN (4 dígitos) *</label>
+            <input
+              type="password"
+              inputmode="numeric"
+              pattern="\d{4}"
+              maxlength="4"
+              id="setup-rh-pin"
+              required
+              placeholder="••••"
+              class="w-full px-4 py-3.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-center text-xl font-extrabold tracking-[0.4em] text-[#1E293B] focus:bg-white focus:border-[#059669] outline-none tabular-nums"
+            />
+          </div>
+
+          <div>
+            <label for="setup-rh-pin-confirm" class="block text-xs font-bold text-slate-700 mb-1">Confirmar PIN *</label>
+            <input
+              type="password"
+              inputmode="numeric"
+              pattern="\d{4}"
+              maxlength="4"
+              id="setup-rh-pin-confirm"
+              required
+              placeholder="••••"
+              class="w-full px-4 py-3.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-center text-xl font-extrabold tracking-[0.4em] text-[#1E293B] focus:bg-white focus:border-[#059669] outline-none tabular-nums"
+            />
+          </div>
+        </div>
+
+        <p id="setup-rh-error" class="text-xs font-semibold text-rose-600 text-center min-h-[1rem]"></p>
+
+        <button type="submit" id="btn-save-setup-rh" class="w-full py-3.5 px-4 rounded-xl bg-[#1E293B] hover:bg-slate-800 active:scale-[0.99] text-white font-bold text-sm shadow-sm transition">
+          Salvar PIN e Acessar Gestão de Pessoas
+        </button>
+      </form>
+
+      <div class="pt-3 border-t border-slate-100 text-center">
+        <p class="text-[11px] text-slate-400">
+          Sistema independente de RH & Ponto • Sincronizado na nuvem
+        </p>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         1. TELA DE BLOQUEIO POR PIN (4 DÍGITOS)
+    ========================================================== -->
+    <section id="view-lock" class="flex-1 flex flex-col justify-between p-6 bg-gradient-to-b from-slate-50 via-white to-slate-50/70">
+      <div>
+        <div class="flex justify-center">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-[11px] font-semibold text-slate-600">
+            <span id="cloud-status-dot" class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+            <span id="cloud-status-text">Conectando à nuvem...</span>
+          </div>
+        </div>
+
+        <div class="text-center pt-5">
+          <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[#1E293B] text-white font-display font-extrabold text-2xl shadow-md mb-3">
+            R
+          </div>
+          <h1 class="text-2xl font-extrabold tracking-tight text-[#1E293B]">Rêve • Pessoas</h1>
+          <p class="text-xs font-medium text-slate-500 mt-0.5">Colaboradores, Faltas & Horas Extras</p>
+        </div>
+      </div>
+
+      <div class="my-5 flex flex-col items-center">
+        <p class="text-sm font-medium text-slate-600 mb-4">Digite o PIN do Gestor</p>
+
+        <div id="pin-dots" class="flex items-center justify-center gap-4 mb-2">
+          <span class="pin-dot w-4 h-4 rounded-full border-2 border-slate-300 bg-transparent transition-all duration-150"></span>
+          <span class="pin-dot w-4 h-4 rounded-full border-2 border-slate-300 bg-transparent transition-all duration-150"></span>
+          <span class="pin-dot w-4 h-4 rounded-full border-2 border-slate-300 bg-transparent transition-all duration-150"></span>
+          <span class="pin-dot w-4 h-4 rounded-full border-2 border-slate-300 bg-transparent transition-all duration-150"></span>
+        </div>
+
+        <p id="pin-error" class="h-5 text-xs font-semibold text-rose-600 text-center mt-1"></p>
+      </div>
+
+      <div class="w-full max-w-[290px] mx-auto">
+        <div class="grid grid-cols-3 gap-3">
+          <button type="button" data-key="1" class="keypad-btn h-16 rounded-2xl bg-slate-100/90 hover:bg-slate-200/70 text-2xl font-display font-bold text-[#1E293B] flex items-center justify-center">1</button>
+          <button type="button" data-key="2" class="keypad-btn h-16 rounded-2xl bg-slate-100/90 hover:bg-slate-200/70 text-2xl font-display font-bold text-[#1E293B] flex items-center justify-center">2</button>
+          <button type="button" data-key="3" class="keypad-btn h-16 rounded-2xl bg-slate-100/90 hover:bg-slate-200/70 text-2xl font-display font-bold text-[#1E293B] flex items-center justify-center">3</button>
+          <button type="button" data-key="4" class="keypad-btn h-16 rounded-2xl bg-slate-100/90 hover:bg-slate-200/70 text-2xl font-display font-bold text-[#1E293B] flex items-center justify-center">4</button>
+          <button type="button" data-key="5" class="keypad-btn h-16 rounded-2xl bg-slate-100/90 hover:bg-slate-200/70 text-2xl font-display font-bold text-[#1E293B] flex items-center justify-center">5</button>
+          <button type="button" data-key="6" class="keypad-btn h-16 rounded-2xl bg-slate-100/90 hover:bg-slate-200/70 text-2xl font-display font-bold text-[#1E293B] flex items-center justify-center">6</button>
+          <button type="button" data-key="7" class="keypad-btn h-16 rounded-2xl bg-slate-100/90 hover:bg-slate-200/70 text-2xl font-display font-bold text-[#1E293B] flex items-center justify-center">7</button>
+          <button type="button" data-key="8" class="keypad-btn h-16 rounded-2xl bg-slate-100/90 hover:bg-slate-200/70 text-2xl font-display font-bold text-[#1E293B] flex items-center justify-center">8</button>
+          <button type="button" data-key="9" class="keypad-btn h-16 rounded-2xl bg-slate-100/90 hover:bg-slate-200/70 text-2xl font-display font-bold text-[#1E293B] flex items-center justify-center">9</button>
+          <button type="button" id="btn-pin-clear" class="keypad-btn h-16 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200/70 text-[11px] font-bold uppercase tracking-wider text-slate-500 flex items-center justify-center">Limpar</button>
+          <button type="button" data-key="0" class="keypad-btn h-16 rounded-2xl bg-slate-100/90 hover:bg-slate-200/70 text-2xl font-display font-bold text-[#1E293B] flex items-center justify-center">0</button>
+          <button type="button" id="btn-pin-back" aria-label="Apagar" class="keypad-btn h-16 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200/70 text-slate-700 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414 6.414a2 2 0 001.414.586H19a2 2 0 002-2V7a2 2 0 00-2-2h-8.172a2 2 0 00-1.414.586L3 12z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="mt-5 pt-3 border-t border-slate-100 text-center">
+        <p class="text-[11px] text-slate-400">
+          Acesso restrito ao departamento pessoal / gestor
+        </p>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         2. PAINEL PRINCIPAL DE GESTÃO DE PESSOAS (4 ABAS)
+    ========================================================== -->
+    <section id="view-main" class="hidden flex-1 flex flex-col bg-[#F8FAFC] animate-fade-in">
+      <!-- Cabeçalho Fixo -->
+      <header class="bg-[#1E293B] text-white px-4 py-3.5 sticky top-0 z-20 flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="w-9 h-9 rounded-xl bg-indigo-500 text-white font-display font-extrabold flex items-center justify-center shrink-0 text-sm">R</div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <p class="text-[10px] uppercase tracking-widest font-bold text-indigo-300">Gestão de Pessoas</p>
+            </div>
+            <h2 id="header-company-title" class="text-base font-extrabold leading-tight truncate">Rêve • Colaboradores</h2>
+          </div>
+        </div>
+        <button type="button" id="btn-logout" class="shrink-0 inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-white text-xs font-bold transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          Bloquear
+        </button>
+      </header>
+
+      <!-- Conteúdo Rolável -->
+      <div class="p-4 space-y-4 flex-1 pb-24">
+
+        <!-- =====================================================
+             ABA 1: COLABORADORES & JORNADA DE TRABALHO
+        ====================================================== -->
+        <div id="tab-colaboradores" class="space-y-4">
+          <!-- Resumo da Equipe -->
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-white p-4 rounded-2xl border border-[#E2E8F0]">
+              <p class="text-xs font-semibold text-slate-500">Colaboradores Ativos</p>
+              <p id="kpi-active-employees" class="text-2xl font-extrabold text-[#1E293B] tabular-nums mt-1">0</p>
+              <p id="kpi-total-employees" class="text-[11px] text-slate-400 mt-0.5">0 cadastrados</p>
+            </div>
+
+            <div class="bg-white p-4 rounded-2xl border border-[#E2E8F0]">
+              <p class="text-xs font-semibold text-slate-500">Horas Extras (Mês)</p>
+              <p id="kpi-month-overtime" class="text-2xl font-extrabold text-[#059669] tabular-nums mt-1">0h 00m</p>
+              <p id="kpi-month-absences" class="text-[11px] text-slate-400 mt-0.5">0 faltas/atestados</p>
+            </div>
+          </div>
+
+          <!-- Botão Expandir / Ocultar Cadastro -->
+          <button type="button" id="btn-toggle-new-emp" class="w-full py-3.5 px-4 rounded-2xl bg-[#1E293B] hover:bg-slate-800 active:scale-[0.99] text-white text-xs font-bold uppercase tracking-wider shadow-sm transition flex items-center justify-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            <span id="btn-toggle-new-emp-label">Cadastrar Novo Colaborador</span>
+          </button>
+
+          <!-- Formulário Completo de Cadastro -->
+          <form id="form-new-employee" class="hidden bg-white p-4 rounded-2xl border border-[#E2E8F0] space-y-3 animate-fade-in">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+              <h3 class="text-sm font-extrabold text-[#1E293B]">Ficha do Colaborador</h3>
+              <span class="text-[11px] font-semibold text-slate-400">Dados Pessoais & Turno</span>
+            </div>
+
+            <div>
+              <label for="emp-name" class="block text-xs font-semibold text-slate-600 mb-1">Nome Completo *</label>
+              <input type="text" id="emp-name" required maxlength="60" placeholder="Ex: Mariana Oliveira Santos" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-medium outline-none focus:bg-white focus:border-[#1E293B]" />
+            </div>
+
+            <div class="grid grid-cols-2 gap-2.5">
+              <div>
+                <label for="emp-cpf" class="block text-xs font-semibold text-slate-600 mb-1">CPF *</label>
+                <input type="text" inputmode="numeric" id="emp-cpf" required maxlength="14" placeholder="000.000.000-00" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-semibold tabular-nums outline-none focus:bg-white focus:border-[#1E293B]" />
+              </div>
+              <div>
+                <label for="emp-phone" class="block text-xs font-semibold text-slate-600 mb-1">Telefone / WhatsApp *</label>
+                <input type="tel" inputmode="numeric" id="emp-phone" required maxlength="15" placeholder="(31) 99999-9999" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-semibold tabular-nums outline-none focus:bg-white focus:border-[#1E293B]" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2.5">
+              <div>
+                <label for="emp-email" class="block text-xs font-semibold text-slate-600 mb-1">E-mail</label>
+                <input type="email" id="emp-email" maxlength="70" placeholder="nome@email.com" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm outline-none focus:bg-white focus:border-[#1E293B]" />
+              </div>
+              <div>
+                <label for="emp-hire-date" class="block text-xs font-semibold text-slate-600 mb-1">Data Contratação *</label>
+                <input type="date" id="emp-hire-date" required class="w-full px-3 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-semibold outline-none focus:bg-white focus:border-[#1E293B]" />
+              </div>
+            </div>
+
+            <div>
+              <label for="emp-role" class="block text-xs font-semibold text-slate-600 mb-1">Cargo / Função</label>
+              <input type="text" id="emp-role" maxlength="40" placeholder="Ex: Consultora de Vendas / Caixa" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm outline-none focus:bg-white focus:border-[#1E293B]" />
+            </div>
+
+            <!-- Bloco de Horário de Trabalho Padrão -->
+            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2.5">
+              <div class="flex items-center justify-between">
+                <p class="text-xs font-extrabold text-[#1E293B]">Horário de Trabalho Padrão *</p>
+                <span id="emp-shift-preview" class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-[#059669] tabular-nums">
+                  Carga: 8h 00m/dia
+                </span>
+              </div>
+              <p class="text-[11px] text-slate-500 leading-snug">
+                Usado automaticamente para calcular as horas extras feitas além do expediente.
+              </p>
+
+              <div class="grid grid-cols-3 gap-2">
+                <div>
+                  <label for="emp-shift-start" class="block text-[11px] font-semibold text-slate-600 mb-1">Entrada *</label>
+                  <input type="time" id="emp-shift-start" value="09:00" required class="w-full px-2.5 py-2 rounded-xl bg-white border border-[#E2E8F0] text-sm font-bold text-[#1E293B] tabular-nums outline-none focus:border-[#1E293B]" />
+                </div>
+                <div>
+                  <label for="emp-shift-end" class="block text-[11px] font-semibold text-slate-600 mb-1">Saída *</label>
+                  <input type="time" id="emp-shift-end" value="18:00" required class="w-full px-2.5 py-2 rounded-xl bg-white border border-[#E2E8F0] text-sm font-bold text-[#1E293B] tabular-nums outline-none focus:border-[#1E293B]" />
+                </div>
+                <div>
+                  <label for="emp-break-min" class="block text-[11px] font-semibold text-slate-600 mb-1">Intervalo (min)</label>
+                  <input type="number" id="emp-break-min" value="60" min="0" max="240" step="5" required class="w-full px-2.5 py-2 rounded-xl bg-white border border-[#E2E8F0] text-sm font-bold text-[#1E293B] tabular-nums outline-none focus:border-[#1E293B]" />
+                </div>
+              </div>
+            </div>
+
+            <div class="flex gap-2.5 pt-1">
+              <button type="button" id="btn-cancel-new-emp" class="flex-1 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">Cancelar</button>
+              <button type="submit" id="btn-submit-new-emp" class="flex-2 py-3 px-5 rounded-xl bg-[#059669] hover:bg-emerald-700 text-white text-xs font-bold shadow-sm transition">
+                Salvar Colaborador
+              </button>
+            </div>
+          </form>
+
+          <!-- Busca e Lista de Colaboradores -->
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <h3 class="text-sm font-extrabold text-[#1E293B]">Equipe Cadastrada</h3>
+              <input type="search" id="search-employee" placeholder="Buscar nome ou CPF..." class="w-44 px-3 py-1.5 rounded-xl bg-white border border-[#E2E8F0] text-xs font-medium outline-none focus:border-[#1E293B]" />
+            </div>
+
+            <div id="employees-list" class="space-y-2.5">
+              <!-- Cards dos colaboradores renderizados via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- =====================================================
+             ABA 2: FALTAS & ATESTADOS MÉDICOS
+        ====================================================== -->
+        <div id="tab-faltas" class="hidden space-y-4">
+          <!-- Seletor de Mês -->
+          <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-2xl border border-[#E2E8F0]">
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Mês de Referência</span>
+            <input type="month" id="abs-month-filter" class="text-sm font-bold text-[#1E293B] bg-slate-100 px-3 py-1.5 rounded-xl border-0 focus:ring-2 focus:ring-[#1E293B] outline-none" />
+          </div>
+
+          <!-- Formulário de Registro de Falta ou Atestado -->
+          <form id="form-new-absence" class="bg-white p-4 rounded-2xl border border-[#E2E8F0] space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-extrabold text-[#1E293B]">Registrar Falta ou Atestado</h3>
+              <span class="text-[11px] font-semibold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-md">Controle de Frequência</span>
+            </div>
+
+            <div>
+              <label for="abs-emp-id" class="block text-xs font-semibold text-slate-600 mb-1">Colaborador *</label>
+              <select id="abs-emp-id" required class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-bold text-[#1E293B] outline-none focus:bg-white focus:border-[#1E293B]">
+                <option value="">Selecione o colaborador...</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2.5">
+              <div>
+                <label for="abs-type" class="block text-xs font-semibold text-slate-600 mb-1">Tipo de Ocorrência *</label>
+                <select id="abs-type" required class="w-full px-3 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-bold text-[#1E293B] outline-none focus:bg-white focus:border-[#1E293B]">
+                  <option value="atestado">Atestado Médico</option>
+                  <option value="falta_injustificada">Falta Injustificada</option>
+                  <option value="falta_justificada">Falta Justificada</option>
+                </select>
+              </div>
+              <div>
+                <label for="abs-date" class="block text-xs font-semibold text-slate-600 mb-1">Data Início *</label>
+                <input type="date" id="abs-date" required class="w-full px-3 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-semibold outline-none focus:bg-white focus:border-[#1E293B]" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2.5">
+              <div>
+                <label for="abs-days" class="block text-xs font-semibold text-slate-600 mb-1">Qtd. Dias *</label>
+                <input type="number" id="abs-days" value="1" min="1" max="60" required class="w-full px-3 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-bold text-center tabular-nums outline-none focus:bg-white focus:border-[#1E293B]" />
+              </div>
+              <div class="col-span-2">
+                <label for="abs-reason" class="block text-xs font-semibold text-slate-600 mb-1">Motivo / CID / Observação</label>
+                <input type="text" id="abs-reason" maxlength="90" placeholder="Ex: Consulta odontológica / CID J00" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm outline-none focus:bg-white focus:border-[#1E293B]" />
+              </div>
+            </div>
+
+            <button type="submit" id="btn-submit-absence" class="w-full py-3.5 px-4 rounded-xl bg-[#1E293B] hover:bg-slate-800 active:scale-[0.99] text-white font-bold text-xs uppercase tracking-wider shadow-sm transition">
+              + Salvar Ocorrência
+            </button>
+          </form>
+
+          <!-- Resumo de Ocorrências no Mês -->
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-white p-3.5 rounded-2xl border border-[#E2E8F0]">
+              <p class="text-[11px] font-bold uppercase text-amber-600">Atestados no Mês</p>
+              <p id="abs-summary-atestados" class="text-lg font-extrabold text-[#1E293B] tabular-nums mt-0.5">0 dias (0 reg.)</p>
+            </div>
+            <div class="bg-white p-3.5 rounded-2xl border border-[#E2E8F0]">
+              <p class="text-[11px] font-bold uppercase text-rose-600">Faltas no Mês</p>
+              <p id="abs-summary-faltas" class="text-lg font-extrabold text-[#1E293B] tabular-nums mt-0.5">0 dias (0 reg.)</p>
+            </div>
+          </div>
+
+          <!-- Lista de Faltas e Atestados -->
+          <div class="bg-white p-4 rounded-2xl border border-[#E2E8F0] space-y-2.5">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-extrabold text-[#1E293B]">Histórico do Mês</h3>
+              <span id="abs-list-count" class="text-xs font-semibold text-slate-400">0 registros</span>
+            </div>
+            <div id="absences-list" class="divide-y divide-slate-100">
+              <!-- Renderizado via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- =====================================================
+             ABA 3: HORAS EXTRAS (CÁLCULO AUTOMÁTICO PELA JORNADA)
+        ====================================================== -->
+        <div id="tab-horas" class="hidden space-y-4">
+          <!-- Seletor de Mês -->
+          <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-2xl border border-[#E2E8F0]">
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Fechamento do Mês</span>
+            <input type="month" id="ot-month-filter" class="text-sm font-bold text-[#1E293B] bg-slate-100 px-3 py-1.5 rounded-xl border-0 focus:ring-2 focus:ring-[#1E293B] outline-none" />
+          </div>
+
+          <!-- Formulário Inteligente de Horas Extras -->
+          <form id="form-new-overtime" class="bg-white p-4 rounded-2xl border border-[#E2E8F0] space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-extrabold text-[#1E293B]">Lançar Dia com Hora Extra</h3>
+              <span class="text-[11px] font-bold text-[#059669] bg-emerald-50 px-2 py-0.5 rounded-md">Cálculo Automático</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div>
+                <label for="ot-emp-id" class="block text-xs font-semibold text-slate-600 mb-1">Colaborador *</label>
+                <select id="ot-emp-id" required class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-bold text-[#1E293B] outline-none focus:bg-white focus:border-[#1E293B]">
+                  <option value="">Selecione...</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="ot-date" class="block text-xs font-semibold text-slate-600 mb-1">Dia da Hora Extra *</label>
+                <input type="date" id="ot-date" required class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-semibold outline-none focus:bg-white focus:border-[#1E293B]" />
+              </div>
+            </div>
+
+            <!-- Cartão Informativo do Turno Cadastrado do Colaborador -->
+            <div id="ot-emp-shift-banner" class="hidden px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-between gap-2 text-xs">
+              <span class="text-slate-600">Turno padrão: <strong id="ot-banner-hours" class="text-[#1E293B] tabular-nums">09:00 às 18:00</strong></span>
+              <span id="ot-banner-workload" class="font-bold text-[#1E293B] tabular-nums">Jornada: 8h 00m</span>
+            </div>
+
+            <!-- Horário Realmente Trabalhado naquele Dia -->
+            <div class="p-3.5 rounded-2xl bg-emerald-50/50 border border-emerald-200/70 space-y-2.5">
+              <p class="text-xs font-extrabold text-[#1E293B]">Horário Real Trabalhado neste Dia *</p>
+              <div class="grid grid-cols-3 gap-2">
+                <div>
+                  <label for="ot-actual-start" class="block text-[11px] font-semibold text-slate-600 mb-1">Entrada Real</label>
+                  <input type="time" id="ot-actual-start" required class="w-full px-2.5 py-2 rounded-xl bg-white border border-[#E2E8F0] text-sm font-bold text-[#1E293B] tabular-nums outline-none focus:border-[#059669]" />
+                </div>
+                <div>
+                  <label for="ot-actual-end" class="block text-[11px] font-semibold text-slate-600 mb-1">Saída Real</label>
+                  <input type="time" id="ot-actual-end" required class="w-full px-2.5 py-2 rounded-xl bg-white border border-[#E2E8F0] text-sm font-bold text-[#1E293B] tabular-nums outline-none focus:border-[#059669]" />
+                </div>
+                <div>
+                  <label for="ot-actual-break" class="block text-[11px] font-semibold text-slate-600 mb-1">Intervalo (min)</label>
+                  <input type="number" id="ot-actual-break" min="0" max="240" step="5" value="60" required class="w-full px-2.5 py-2 rounded-xl bg-white border border-[#E2E8F0] text-sm font-bold text-[#1E293B] tabular-nums outline-none focus:border-[#059669]" />
+                </div>
+              </div>
+
+              <!-- Preview Ao Vivo do Cálculo de Horas Extras -->
+              <div class="pt-2 border-t border-emerald-200/60 flex items-center justify-between">
+                <div>
+                  <p class="text-[11px] font-semibold text-slate-500">Trabalhado no dia: <strong id="ot-preview-worked" class="text-[#1E293B] tabular-nums">0h 00m</strong></p>
+                </div>
+                <div class="text-right">
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Hora Extra Apurada</span>
+                  <span id="ot-preview-extra" class="text-base font-extrabold text-[#059669] tabular-nums">+ 0h 00m</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label for="ot-note" class="block text-xs font-semibold text-slate-600 mb-1">Motivo / Atividade (opcional)</label>
+              <input type="text" id="ot-note" maxlength="80" placeholder="Ex: Fechamento de vitrine / Balanço" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm outline-none focus:bg-white focus:border-[#1E293B]" />
+            </div>
+
+            <button type="submit" id="btn-submit-overtime" class="w-full py-3.5 px-4 rounded-xl bg-[#059669] hover:bg-emerald-700 active:scale-[0.99] text-white font-bold text-xs uppercase tracking-wider shadow-sm transition">
+              + Registrar Hora Extra
+            </button>
+          </form>
+
+          <!-- Consolidado Mensal de Horas Extras por Colaborador -->
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between px-1">
+              <h3 class="text-sm font-extrabold text-[#1E293B]">Total Acumulado no Mês</h3>
+              <span id="ot-month-grand-total" class="text-xs font-extrabold text-[#059669] tabular-nums">Total Equipe: 0h 00m</span>
+            </div>
+            <div id="ot-monthly-summary-list" class="space-y-2">
+              <!-- Cards resumidos por colaborador no mês -->
+            </div>
+          </div>
+
+          <!-- Lançamentos Detalhados do Mês -->
+          <div class="bg-white p-4 rounded-2xl border border-[#E2E8F0] space-y-2.5">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-extrabold text-[#1E293B]">Dias Lançados no Mês</h3>
+              <span id="ot-list-count" class="text-xs font-semibold text-slate-400">0 dias</span>
+            </div>
+            <div id="overtime-list" class="divide-y divide-slate-100">
+              <!-- Histórico detalhado -->
+            </div>
+          </div>
+        </div>
+
+        <!-- =====================================================
+             ABA 4: AJUSTES & EXPORTAÇÃO CSV
+        ====================================================== -->
+        <div id="tab-ajustes" class="hidden space-y-4">
+          <form id="form-update-rh-pin" class="bg-white p-4 rounded-2xl border border-[#E2E8F0] space-y-3">
+            <h3 class="text-sm font-extrabold text-[#1E293B]">Alterar PIN de Acesso</h3>
+            <p class="text-xs text-slate-500">Atualize a senha de 4 dígitos para entrar no painel de Gestão de Pessoas.</p>
+            <div class="flex gap-2">
+              <input type="text" inputmode="numeric" pattern="\d{4}" maxlength="4" id="new-rh-pin" required placeholder="Novo PIN (4 dígitos)" class="flex-1 px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-bold tracking-widest tabular-nums outline-none focus:border-[#1E293B]" />
+              <button type="submit" class="px-4 py-2.5 rounded-xl bg-[#1E293B] hover:bg-slate-800 text-white text-xs font-bold transition">
+                Salvar
+              </button>
+            </div>
+          </form>
+
+          <div class="bg-white p-4 rounded-2xl border border-[#E2E8F0] space-y-2.5">
+            <h3 class="text-sm font-extrabold text-[#1E293B]">Exportar Relatório Mensal (CSV / Excel)</h3>
+            <p class="text-xs text-slate-500">Gera planilha consolidada de colaboradores, faltas, atestados e horas extras do mês selecionado.</p>
+            <button type="button" id="btn-export-rh-csv" class="w-full py-3 px-4 rounded-xl bg-[#059669] hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider transition">
+              Exportar Planilha do Mês
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de Navegação Inferior Fixa (4 Abas) -->
+      <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-[#E2E8F0] px-2 pt-2 pb-safe z-30 grid grid-cols-4 gap-1">
+        <button type="button" data-tab="colaboradores" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-[#1E293B] font-bold bg-slate-100/80 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mb-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span class="text-[10px]">Equipe</span>
+        </button>
+
+        <button type="button" data-tab="faltas" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 font-semibold transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mb-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <span class="text-[10px]">Faltas/Atest.</span>
+        </button>
+
+        <button type="button" data-tab="horas" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 font-semibold transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mb-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span class="text-[10px]">Horas Extras</span>
+        </button>
+
+        <button type="button" data-tab="ajustes" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 font-semibold transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mb-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span class="text-[10px]">Ajustes</span>
+        </button>
+      </nav>
+    </section>
+  </div>
+
+  <!-- =========================================================
+       MODAIS CUSTOMIZADOS
+  ========================================================== -->
+
+  <!-- Modal Editar Colaborador -->
+  <div id="modal-edit-employee" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-4">
+    <div class="bg-white w-full max-w-md rounded-3xl p-5 shadow-xl space-y-4 max-h-[90vh] overflow-y-auto animate-fade-in">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-extrabold text-[#1E293B]">Editar Colaborador</h3>
+        <button type="button" data-close-modal="modal-edit-employee" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-bold">&times;</button>
+      </div>
+
+      <form id="form-edit-employee" class="space-y-3">
+        <input type="hidden" id="edit-emp-id" />
+
+        <div>
+          <label for="edit-emp-name" class="block text-xs font-semibold text-slate-600 mb-1">Nome Completo *</label>
+          <input type="text" id="edit-emp-name" required maxlength="60" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-medium outline-none focus:border-[#1E293B]" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label for="edit-emp-cpf" class="block text-xs font-semibold text-slate-600 mb-1">CPF *</label>
+            <input type="text" inputmode="numeric" id="edit-emp-cpf" required maxlength="14" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-semibold tabular-nums outline-none focus:border-[#1E293B]" />
+          </div>
+          <div>
+            <label for="edit-emp-phone" class="block text-xs font-semibold text-slate-600 mb-1">Telefone *</label>
+            <input type="tel" inputmode="numeric" id="edit-emp-phone" required maxlength="15" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-semibold tabular-nums outline-none focus:border-[#1E293B]" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label for="edit-emp-email" class="block text-xs font-semibold text-slate-600 mb-1">E-mail</label>
+            <input type="email" id="edit-emp-email" maxlength="70" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm outline-none focus:border-[#1E293B]" />
+          </div>
+          <div>
+            <label for="edit-emp-hire-date" class="block text-xs font-semibold text-slate-600 mb-1">Contratação *</label>
+            <input type="date" id="edit-emp-hire-date" required class="w-full px-3 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-semibold outline-none focus:border-[#1E293B]" />
+          </div>
+        </div>
+
+        <div>
+          <label for="edit-emp-role" class="block text-xs font-semibold text-slate-600 mb-1">Cargo / Função</label>
+          <input type="text" id="edit-emp-role" maxlength="40" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm outline-none focus:border-[#1E293B]" />
+        </div>
+
+        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
+          <div class="flex items-center justify-between">
+            <p class="text-xs font-extrabold text-[#1E293B]">Horário Padrão</p>
+            <span id="edit-emp-shift-preview" class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-[#059669] tabular-nums">Carga: 8h 00m</span>
+          </div>
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label for="edit-emp-shift-start" class="block text-[11px] font-semibold text-slate-600 mb-1">Entrada</label>
+              <input type="time" id="edit-emp-shift-start" required class="w-full px-2.5 py-2 rounded-xl bg-white border border-[#E2E8F0] text-sm font-bold tabular-nums outline-none" />
+            </div>
+            <div>
+              <label for="edit-emp-shift-end" class="block text-[11px] font-semibold text-slate-600 mb-1">Saída</label>
+              <input type="time" id="edit-emp-shift-end" required class="w-full px-2.5 py-2 rounded-xl bg-white border border-[#E2E8F0] text-sm font-bold tabular-nums outline-none" />
+            </div>
+            <div>
+              <label for="edit-emp-break-min" class="block text-[11px] font-semibold text-slate-600 mb-1">Interv. (min)</label>
+              <input type="number" id="edit-emp-break-min" min="0" max="240" step="5" required class="w-full px-2.5 py-2 rounded-xl bg-white border border-[#E2E8F0] text-sm font-bold tabular-nums outline-none" />
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-2.5 pt-2">
+          <button type="button" data-close-modal="modal-edit-employee" class="flex-1 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">Cancelar</button>
+          <button type="submit" class="flex-1 py-3 rounded-xl bg-[#1E293B] hover:bg-slate-800 text-white text-xs font-bold">Salvar Alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Confirmação Genérico -->
+  <div id="modal-confirm" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-xl space-y-4 animate-fade-in">
+      <h3 id="confirm-title" class="text-base font-extrabold text-[#1E293B]">Confirmar</h3>
+      <p id="confirm-message" class="text-sm text-slate-600 leading-relaxed"></p>
+      <div class="flex gap-2.5 pt-2">
+        <button type="button" id="confirm-cancel-btn" class="flex-1 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">Cancelar</button>
+        <button type="button" id="confirm-ok-btn" class="flex-1 py-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast de Feedback -->
+  <div id="toast" class="pointer-events-none fixed bottom-20 left-1/2 -translate-x-1/2 z-50 opacity-0 transition-all duration-200">
+    <div id="toast-box" class="px-4 py-3 rounded-2xl bg-[#1E293B] text-white text-xs font-semibold shadow-lg whitespace-nowrap">
+      <span id="toast-text"></span>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       FIREBASE v10.12.2 + LÓGICA DE RH, FALTAS E HORAS EXTRAS
+  ========================================================== -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      initializeFirestore,
+      getFirestore,
+      persistentLocalCache,
+      persistentMultipleTabManager,
+      collection,
+      doc,
+      getDoc,
+      getDocs,
+      setDoc,
+      addDoc,
+      updateDoc,
+      deleteDoc,
+      query,
+      where,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    /* ---------------------------------------------------------
+       1. CONFIGURAÇÃO DO FIREBASE (COLEÇÕES DEDICADAS DE RH)
+    --------------------------------------------------------- */
+    const firebaseConfig = {
+      apiKey: "AIzaSyBQjAMZikukOul13NewhJ3o_DpVZMetCE0",
+      authDomain: "reve-vendas.firebaseapp.com",
+      projectId: "reve-vendas",
+      storageBucket: "reve-vendas.firebasestorage.app",
+      messagingSenderId: "901732327830",
+      appId: "1:901732327830:web:f3e498f29885504bf37db7",
+      measurementId: "G-S1006X99TE"
+    };
+
+    const app = initializeApp(firebaseConfig);
+
+    let db;
+    try {
+      db = initializeFirestore(app, {
+        localCache: persistentLocalCache({
+          tabManager: persistentMultipleTabManager()
+        })
+      });
+    } catch (err) {
+      db = getFirestore(app);
+    }
+
+    /* ---------------------------------------------------------
+       2. ESTADO EM MEMÓRIA
+    --------------------------------------------------------- */
+    let rhConfig = {
+      pin: null,
+      empresaNome: "Rêve"
+    };
+
+    let employees = [];       // Coleção: rh_colaboradores
+    let absences = [];        // Coleção: rh_faltas_atestados (filtrada por mês)
+    let overtimes = [];       // Coleção: rh_horas_extras (filtrada por mês)
+
+    let isUnlocked = false;
+    let pinBuffer = "";
+    let activeTab = "colaboradores";
+    let unsubAbsences = null;
+    let unsubOvertimes = null;
+
+    /* ---------------------------------------------------------
+       3. UTILITÁRIOS DE DATA, HORAS E MÁSCARAS
+    --------------------------------------------------------- */
+    function getTodaySP() {
+      const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "America/Sao_Paulo",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).formatToParts(new Date());
+      const y = parts.find(p => p.type === "year").value;
+      const m = parts.find(p => p.type === "month").value;
+      const d = parts.find(p => p.type === "day").value;
+      return `${y}-${m}-${d}`;
+    }
+
+    function getCurrentMonthSP() {
+      return getTodaySP().slice(0, 7);
+    }
+
+    function formatDateBR(yyyyMmDd) {
+      if (!yyyyMmDd || yyyyMmDd.length < 10) return yyyyMmDd || "";
+      const [y, m, d] = yyyyMmDd.split("-");
+      return `${d}/${m}/${y}`;
+    }
+
+    function escapeHTML(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    // Converte "HH:MM" em minutos desde 00:00
+    function timeToMinutes(hhmm) {
+      if (!hhmm || !hhmm.includes(":")) return 0;
+      const [h, m] = hhmm.split(":").map(Number);
+      return (h || 0) * 60 + (m || 0);
+    }
+
+    // Calcula minutos líquidos trabalhados (suporta virada de madrugada)
+    function calcNetMinutes(startHHMM, endHHMM, breakMinutes) {
+      const start = timeToMinutes(startHHMM);
+      let end = timeToMinutes(endHHMM);
+      if (end < start) end += 24 * 60;
+      const gross = Math.max(0, end - start);
+      return Math.max(0, gross - (Number(breakMinutes) || 0));
+    }
+
+    // Formata minutos inteiros como "2h 30m"
+    function formatMinutesToHM(totalMinutes) {
+      const mins = Math.max(0, Math.round(Number(totalMinutes) || 0));
+      const h = Math.floor(mins / 60);
+      const m = mins % 60;
+      return `${h}h ${String(m).padStart(2, "0")}m`;
+    }
+
+    // Máscara de CPF: 000.000.000-00
+    function applyCPFMask(inputEl) {
+      inputEl.addEventListener("input", () => {
+        let v = inputEl.value.replace(/\D/g, "").slice(0, 11);
+        v = v.replace(/(\d{3})(\d)/, "$1.$2");
+        v = v.replace(/(\d{3})(\d)/, "$1.$2");
+        v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+        inputEl.value = v;
+      });
+    }
+
+    // Máscara de Telefone: (00) 00000-0000
+    function applyPhoneMask(inputEl) {
+      inputEl.addEventListener("input", () => {
+        let v = inputEl.value.replace(/\D/g, "").slice(0, 11);
+        if (v.length > 10) {
+          v = v.replace(/^(\d{2})(\d{5})(\d{4}).*/, "($1) $2-$3");
+        } else if (v.length > 6) {
+          v = v.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, "($1) $2-$3");
+        } else if (v.length > 2) {
+          v = v.replace(/^(\d{2})(\d{0,5})/, "($1) $2");
+        }
+        inputEl.value = v;
+      });
+    }
+
+    /* ---------------------------------------------------------
+       4. MODAIS, TOAST E STATUS DE NUVEM
+    --------------------------------------------------------- */
+    function openModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove("hidden");
+    }
+
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.add("hidden");
+    }
+
+    let toastTimer = null;
+    function showToast(message, isError = false) {
+      const toast = document.getElementById("toast");
+      const box = document.getElementById("toast-box");
+      const text = document.getElementById("toast-text");
+      text.textContent = message;
+      box.className = isError
+        ? "px-4 py-3 rounded-2xl bg-rose-600 text-white text-xs font-semibold shadow-lg whitespace-nowrap"
+        : "px-4 py-3 rounded-2xl bg-[#1E293B] text-white text-xs font-semibold shadow-lg whitespace-nowrap";
+
+      toast.classList.remove("opacity-0");
+      toast.classList.add("opacity-100");
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove("opacity-100");
+        toast.classList.add("opacity-0");
+      }, 2800);
+    }
+
+    function showConfirm(title, message, onConfirm) {
+      document.getElementById("confirm-title").textContent = title;
+      document.getElementById("confirm-message").textContent = message;
+      openModal("modal-confirm");
+
+      const okBtn = document.getElementById("confirm-ok-btn");
+      const cancelBtn = document.getElementById("confirm-cancel-btn");
+
+      const cleanup = () => {
+        closeModal("modal-confirm");
+        okBtn.onclick = null;
+        cancelBtn.onclick = null;
+      };
+
+      cancelBtn.onclick = cleanup;
+      okBtn.onclick = async () => {
+        cleanup();
+        await onConfirm();
+      };
+    }
+
+    function updateCloudStatus(isOnline, fromCache) {
+      const dot = document.getElementById("cloud-status-dot");
+      const txt = document.getElementById("cloud-status-text");
+      if (!dot || !txt) return;
+
+      if (isOnline && !fromCache) {
+        dot.className = "w-2 h-2 rounded-full bg-emerald-500";
+        txt.textContent = "Conectado em tempo real";
+      } else if (isOnline && fromCache) {
+        dot.className = "w-2 h-2 rounded-full bg-amber-500";
+        txt.textContent = "Sincronizando dados...";
+      } else {
+        dot.className = "w-2 h-2 rounded-full bg-slate-400";
+        txt.textContent = "Modo offline ativo";
+      }
+    }
+
+    window.addEventListener("online", () => updateCloudStatus(true, false));
+    window.addEventListener("offline", () => updateCloudStatus(false, true));
+
+    /* ---------------------------------------------------------
+       5. INICIALIZAÇÃO DO FIRESTORE & PRIMEIRO ACESSO
+    --------------------------------------------------------- */
+    async function initFirestoreRH() {
+      try {
+        const cfgRef = doc(db, "config", "rh_admin");
+        const cfgSnap = await getDoc(cfgRef);
+
+        if (!cfgSnap.exists() || !cfgSnap.data()?.pin) {
+          document.getElementById("view-lock").classList.add("hidden");
+          document.getElementById("view-setup-rh").classList.remove("hidden");
+        }
+      } catch (err) {
+        console.warn("Aviso ao ler config/rh_admin:", err);
+      }
+
+      onSnapshot(
+        doc(db, "config", "rh_admin"),
+        (snap) => {
+          updateCloudStatus(navigator.onLine, snap.metadata.fromCache);
+          if (snap.exists() && snap.data()?.pin) {
+            const data = snap.data();
+            rhConfig = {
+              pin: String(data.pin),
+              empresaNome: data.empresaNome || "Rêve"
+            };
+            document.getElementById("header-company-title").textContent = `${rhConfig.empresaNome} • Colaboradores`;
+            if (!document.getElementById("view-setup-rh").classList.contains("hidden") && !isUnlocked) {
+              document.getElementById("view-setup-rh").classList.add("hidden");
+              document.getElementById("view-lock").classList.remove("hidden");
+            }
+          }
+        },
+        () => updateCloudStatus(false, true)
+      );
+
+      onSnapshot(
+        collection(db, "rh_colaboradores"),
+        (snap) => {
+          updateCloudStatus(navigator.onLine, snap.metadata.fromCache);
+          employees = snap.docs
+            .map(d => ({ id: d.id, ...d.data() }))
+            .sort((a, b) => (a.nome || "").localeCompare(b.nome || ""));
+
+          if (isUnlocked) {
+            populateEmployeeSelects();
+            renderEmployeesList();
+            renderAbsencesList();
+            renderOvertimeSection();
+            updateTopKPIs();
+          }
+        },
+        (err) => console.error("Erro onSnapshot rh_colaboradores:", err)
+      );
+    }
+
+    document.getElementById("form-setup-rh").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const errEl = document.getElementById("setup-rh-error");
+      errEl.textContent = "";
+
+      const empresaNome = document.getElementById("setup-company-name").value.trim() || "Rêve";
+      const pin = document.getElementById("setup-rh-pin").value.trim();
+      const pinConfirm = document.getElementById("setup-rh-pin-confirm").value.trim();
+
+      if (!/^\d{4}$/.test(pin)) {
+        errEl.textContent = "O PIN deve conter exatamente 4 dígitos.";
+        return;
+      }
+      if (pin !== pinConfirm) {
+        errEl.textContent = "Os dois PINs digitados não conferem.";
+        return;
+      }
+
+      const btn = document.getElementById("btn-save-setup-rh");
+      btn.disabled = true;
+
+      try {
+        await setDoc(doc(db, "config", "rh_admin"), {
+          pin,
+          empresaNome,
+          criadoEm: new Date().toISOString()
+        });
+        rhConfig = { pin, empresaNome };
+        document.getElementById("view-setup-rh").classList.add("hidden");
+        unlockApp();
+        showToast("PIN de Gestão de Pessoas criado!");
+      } catch (err) {
+        errEl.textContent = "Erro ao salvar configuração. Verifique sua internet.";
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    /* ---------------------------------------------------------
+       6. LOGIN POR PIN DE 4 DÍGITOS
+    --------------------------------------------------------- */
+    function updatePinDots() {
+      const dots = document.querySelectorAll("#pin-dots .pin-dot");
+      dots.forEach((dot, idx) => {
+        if (idx < pinBuffer.length) {
+          dot.classList.remove("border-slate-300", "bg-transparent");
+          dot.classList.add("border-[#1E293B]", "bg-[#1E293B]", "scale-110");
+        } else {
+          dot.classList.add("border-slate-300", "bg-transparent");
+          dot.classList.remove("border-[#1E293B]", "bg-[#1E293B]", "scale-110");
+        }
+      });
+    }
+
+    function handleDigit(digit) {
+      if (pinBuffer.length >= 4) return;
+      document.getElementById("pin-error").textContent = "";
+      pinBuffer += digit;
+      updatePinDots();
+      if (pinBuffer.length === 4) {
+        setTimeout(() => {
+          if (rhConfig.pin && pinBuffer === String(rhConfig.pin)) {
+            pinBuffer = "";
+            updatePinDots();
+            unlockApp();
+          } else {
+            const wrap = document.getElementById("pin-dots");
+            document.getElementById("pin-error").textContent = "PIN incorreto. Tente novamente.";
+            wrap.classList.remove("animate-shake");
+            void wrap.offsetWidth;
+            wrap.classList.add("animate-shake");
+            setTimeout(() => {
+              pinBuffer = "";
+              updatePinDots();
+            }, 350);
+          }
+        }, 100);
+      }
+    }
+
+    function unlockApp() {
+      isUnlocked = true;
+      document.getElementById("view-lock").classList.add("hidden");
+      document.getElementById("view-setup-rh").classList.add("hidden");
+      document.getElementById("view-main").classList.remove("hidden");
+
+      const currentMonth = getCurrentMonthSP();
+      const today = getTodaySP();
+
+      document.getElementById("emp-hire-date").value = today;
+      document.getElementById("abs-month-filter").value = currentMonth;
+      document.getElementById("abs-date").value = today;
+      document.getElementById("ot-month-filter").value = currentMonth;
+      document.getElementById("ot-date").value = today;
+
+      populateEmployeeSelects();
+      renderEmployeesList();
+      subscribeMonthlyData(currentMonth);
+      switchTab("colaboradores");
+    }
+
+    function lockApp() {
+      isUnlocked = false;
+      if (unsubAbsences) { unsubAbsences(); unsubAbsences = null; }
+      if (unsubOvertimes) { unsubOvertimes(); unsubOvertimes = null; }
+      pinBuffer = "";
+      updatePinDots();
+      document.getElementById("view-main").classList.add("hidden");
+      document.getElementById("view-lock").classList.remove("hidden");
+    }
+
+    /* ---------------------------------------------------------
+       7. LISTENERS MENSAIS DE FALTAS/ATESTADOS E HORAS EXTRAS
+    --------------------------------------------------------- */
+    function subscribeMonthlyData(monthYYYYMM) {
+      document.getElementById("abs-month-filter").value = monthYYYYMM;
+      document.getElementById("ot-month-filter").value = monthYYYYMM;
+
+      const startDate = `${monthYYYYMM}-01`;
+      const endDate = `${monthYYYYMM}-31`;
+
+      if (unsubAbsences) unsubAbsences();
+      unsubAbsences = onSnapshot(
+        query(collection(db, "rh_faltas_atestados"), where("data", ">=", startDate), where("data", "<=", endDate)),
+        (snap) => {
+          absences = snap.docs
+            .map(d => ({ id: d.id, ...d.data() }))
+            .sort((a, b) => (b.data || "").localeCompare(a.data || ""));
+          renderAbsencesList();
+          updateTopKPIs();
+        }
+      );
+
+      if (unsubOvertimes) unsubOvertimes();
+      unsubOvertimes = onSnapshot(
+        query(collection(db, "rh_horas_extras"), where("data", ">=", startDate), where("data", "<=", endDate)),
+        (snap) => {
+          overtimes = snap.docs
+            .map(d => ({ id: d.id, ...d.data() }))
+            .sort((a, b) => (b.data || "").localeCompare(a.data || ""));
+          renderOvertimeSection();
+          updateTopKPIs();
+        }
+      );
+    }
+
+    function switchTab(tabName) {
+      activeTab = tabName;
+      document.querySelectorAll(".nav-btn").forEach(btn => {
+        const isActive = btn.dataset.tab === tabName;
+        btn.className = isActive
+          ? "nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-[#1E293B] font-bold bg-slate-100/80 transition"
+          : "nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-400 hover:text-slate-600 font-semibold transition";
+      });
+
+      ["colaboradores", "faltas", "horas", "ajustes"].forEach(name => {
+        document.getElementById(`tab-${name}`).classList.toggle("hidden", name !== tabName);
+      });
+    }
+
+    function updateTopKPIs() {
+      const activeCount = employees.filter(e => e.ativo !== false).length;
+      document.getElementById("kpi-active-employees").textContent = String(activeCount);
+      document.getElementById("kpi-total-employees").textContent =
+        `${employees.length} ${employees.length === 1 ? "cadastrado" : "cadastrados"}`;
+
+      const totalOtMinutes = overtimes.reduce((acc, item) => acc + Number(item.minutosExtras || 0), 0);
+      document.getElementById("kpi-month-overtime").textContent = formatMinutesToHM(totalOtMinutes);
+
+      const totalAbsDays = absences.reduce((acc, item) => acc + Number(item.dias || 1), 0);
+      document.getElementById("kpi-month-absences").textContent =
+        `${totalAbsDays} ${totalAbsDays === 1 ? "dia afastado" : "dias afastados"} no mês`;
+    }
+
+    /* ---------------------------------------------------------
+       8. ABA 1: COLABORADORES & JORNADA DE TRABALHO
+    --------------------------------------------------------- */
+    function updateShiftPreview(startId, endId, breakId, labelId) {
+      const start = document.getElementById(startId).value;
+      const end = document.getElementById(endId).value;
+      const brk = document.getElementById(breakId).value;
+      const mins = calcNetMinutes(start, end, brk);
+      document.getElementById(labelId).textContent = `Carga: ${formatMinutesToHM(mins)}/dia`;
+    }
+
+    ["emp-shift-start", "emp-shift-end", "emp-break-min"].forEach(id => {
+      document.getElementById(id).addEventListener("input", () => {
+        updateShiftPreview("emp-shift-start", "emp-shift-end", "emp-break-min", "emp-shift-preview");
+      });
+    });
+
+    ["edit-emp-shift-start", "edit-emp-shift-end", "edit-emp-break-min"].forEach(id => {
+      document.getElementById(id).addEventListener("input", () => {
+        updateShiftPreview("edit-emp-shift-start", "edit-emp-shift-end", "edit-emp-break-min", "edit-emp-shift-preview");
+      });
+    });
+
+    document.getElementById("btn-toggle-new-emp").addEventListener("click", () => {
+      const form = document.getElementById("form-new-employee");
+      const isHidden = form.classList.contains("hidden");
+      form.classList.toggle("hidden", !isHidden);
+      document.getElementById("btn-toggle-new-emp-label").textContent =
+        isHidden ? "Fechar Formulário" : "Cadastrar Novo Colaborador";
+    });
+
+    document.getElementById("btn-cancel-new-emp").addEventListener("click", () => {
+      document.getElementById("form-new-employee").classList.add("hidden");
+      document.getElementById("btn-toggle-new-emp-label").textContent = "Cadastrar Novo Colaborador";
+    });
+
+    document.getElementById("form-new-employee").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const nome = document.getElementById("emp-name").value.trim();
+      const cpf = document.getElementById("emp-cpf").value.trim();
+      const telefone = document.getElementById("emp-phone").value.trim();
+      const email = document.getElementById("emp-email").value.trim();
+      const dataContratacao = document.getElementById("emp-hire-date").value;
+      const cargo = document.getElementById("emp-role").value.trim();
+      const horaEntrada = document.getElementById("emp-shift-start").value;
+      const horaSaida = document.getElementById("emp-shift-end").value;
+      const intervaloMin = Number(document.getElementById("emp-break-min").value || 0);
+      const jornadaDiariaMin = calcNetMinutes(horaEntrada, horaSaida, intervaloMin);
+
+      if (!nome || cpf.length < 14 || telefone.length < 14 || !dataContratacao) {
+        showToast("Preencha Nome, CPF, Telefone e Data de Contratação.", true);
+        return;
+      }
+
+      if (jornadaDiariaMin <= 0) {
+        showToast("Horário de trabalho inválido.", true);
+        return;
+      }
+
+      const btn = document.getElementById("btn-submit-new-emp");
+      btn.disabled = true;
+
+      try {
+        await addDoc(collection(db, "rh_colaboradores"), {
+          nome,
+          cpf,
+          telefone,
+          email,
+          dataContratacao,
+          cargo,
+          horaEntrada,
+          horaSaida,
+          intervaloMin,
+          jornadaDiariaMin,
+          ativo: true,
+          criadoEm: new Date().toISOString()
+        });
+
+        e.target.reset();
+        document.getElementById("emp-hire-date").value = getTodaySP();
+        document.getElementById("emp-shift-start").value = "09:00";
+        document.getElementById("emp-shift-end").value = "18:00";
+        document.getElementById("emp-break-min").value = "60";
+        updateShiftPreview("emp-shift-start", "emp-shift-end", "emp-break-min", "emp-shift-preview");
+
+        document.getElementById("form-new-employee").classList.add("hidden");
+        document.getElementById("btn-toggle-new-emp-label").textContent = "Cadastrar Novo Colaborador";
+        showToast(`${nome} cadastrado(a) com sucesso!`);
+      } catch (err) {
+        console.error("Erro ao cadastrar colaborador:", err);
+        showToast("Erro ao salvar colaborador.", true);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    function renderEmployeesList() {
+      const term = (document.getElementById("search-employee").value || "").toLowerCase().trim();
+      const filtered = employees.filter(emp =>
+        (emp.nome || "").toLowerCase().includes(term) ||
+        (emp.cpf || "").includes(term) ||
+        (emp.cargo || "").toLowerCase().includes(term)
+      );
+
+      const container = document.getElementById("employees-list");
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="bg-white p-6 rounded-2xl border border-[#E2E8F0] text-center">
+            <p class="text-sm font-semibold text-slate-500">Nenhum colaborador encontrado.</p>
+            <p class="text-xs text-slate-400 mt-1">Toque no botão acima para cadastrar a equipe.</p>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(emp => {
+        const isActive = emp.ativo !== false;
+        const netMins = emp.jornadaDiariaMin || calcNetMinutes(emp.horaEntrada, emp.horaSaida, emp.intervaloMin);
+
+        return `
+          <div class="bg-white p-4 rounded-2xl border border-[#E2E8F0] space-y-3 ${!isActive ? "opacity-65 bg-slate-50" : ""}">
+            <div class="flex items-start justify-between gap-2">
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <h4 class="text-sm font-extrabold text-[#1E293B] truncate">${escapeHTML(emp.nome)}</h4>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-md ${isActive ? "bg-emerald-50 text-[#059669]" : "bg-slate-200 text-slate-600"}">
+                    ${isActive ? "Ativo" : "Inativo"}
+                  </span>
+                </div>
+                ${emp.cargo ? `<p class="text-xs font-semibold text-indigo-600 mt-0.5">${escapeHTML(emp.cargo)}</p>` : ""}
+              </div>
+
+              <button type="button" data-toggle-emp="${emp.id}" class="shrink-0 px-2.5 py-1 rounded-xl text-[11px] font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+                ${isActive ? "Desativar" : "Reativar"}
+              </button>
+            </div>
+
+            <!-- Dados Cadastrais -->
+            <div class="grid grid-cols-2 gap-y-1.5 gap-x-2 text-xs text-slate-600 bg-[#F8FAFC] p-3 rounded-xl border border-slate-100">
+              <p><span class="text-slate-400">CPF:</span> <strong class="text-[#1E293B] tabular-nums">${escapeHTML(emp.cpf || "-")}</strong></p>
+              <p><span class="text-slate-400">Tel:</span> <strong class="text-[#1E293B] tabular-nums">${escapeHTML(emp.telefone || "-")}</strong></p>
+              <p class="col-span-2 truncate"><span class="text-slate-400">E-mail:</span> <strong class="text-[#1E293B]">${escapeHTML(emp.email || "Não informado")}</strong></p>
+              <p><span class="text-slate-400">Admissão:</span> <strong class="text-[#1E293B] tabular-nums">${formatDateBR(emp.dataContratacao)}</strong></p>
+              <p><span class="text-slate-400">Carga:</span> <strong class="text-[#059669] tabular-nums">${formatMinutesToHM(netMins)}/dia</strong></p>
+            </div>
+
+            <!-- Horário de Trabalho Cadastrado -->
+            <div class="flex items-center justify-between text-xs px-1">
+              <span class="text-slate-500">
+                Turno: <strong class="text-[#1E293B] tabular-nums">${escapeHTML(emp.horaEntrada || "09:00")} às ${escapeHTML(emp.horaSaida || "18:00")}</strong>
+                <span class="text-slate-400">(${emp.intervaloMin ?? 60}m interv.)</span>
+              </span>
+            </div>
+
+            <div class="flex items-center gap-2 pt-2 border-t border-slate-100">
+              <button type="button" data-edit-emp="${emp.id}" class="flex-1 py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-[#1E293B] text-xs font-bold transition">
+                Editar Ficha / Turno
+              </button>
+              <button type="button" data-delete-emp="${emp.id}" class="py-2 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold transition">
+                Excluir
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      // Eventos dos botões de cada card
+      container.querySelectorAll("[data-edit-emp]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const emp = employees.find(e => e.id === btn.dataset.editEmp);
+          if (!emp) return;
+          document.getElementById("edit-emp-id").value = emp.id;
+          document.getElementById("edit-emp-name").value = emp.nome || "";
+          document.getElementById("edit-emp-cpf").value = emp.cpf || "";
+          document.getElementById("edit-emp-phone").value = emp.telefone || "";
+          document.getElementById("edit-emp-email").value = emp.email || "";
+          document.getElementById("edit-emp-hire-date").value = emp.dataContratacao || "";
+          document.getElementById("edit-emp-role").value = emp.cargo || "";
+          document.getElementById("edit-emp-shift-start").value = emp.horaEntrada || "09:00";
+          document.getElementById("edit-emp-shift-end").value = emp.horaSaida || "18:00";
+          document.getElementById("edit-emp-break-min").value = emp.intervaloMin ?? 60;
+          updateShiftPreview("edit-emp-shift-start", "edit-emp-shift-end", "edit-emp-break-min", "edit-emp-shift-preview");
+          openModal("modal-edit-employee");
+        });
+      });
+
+      container.querySelectorAll("[data-toggle-emp]").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const emp = employees.find(e => e.id === btn.dataset.toggleEmp);
+          if (!emp) return;
+          const nextState = emp.ativo === false;
+          try {
+            await updateDoc(doc(db, "rh_colaboradores", emp.id), { ativo: nextState });
+            showToast(nextState ? `${emp.nome} reativado(a).` : `${emp.nome} marcado(a) como inativo.`);
+          } catch (err) {
+            showToast("Erro ao atualizar status.", true);
+          }
+        });
+      });
+
+      container.querySelectorAll("[data-delete-emp]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const emp = employees.find(e => e.id === btn.dataset.deleteEmp);
+          if (!emp) return;
+          showConfirm(
+            "Excluir Colaborador",
+            `Deseja excluir ${emp.nome} do cadastro?`,
+            async () => {
+              try {
+                await deleteDoc(doc(db, "rh_colaboradores", emp.id));
+                showToast("Colaborador removido.");
+              } catch (err) {
+                showToast("Erro ao excluir colaborador.", true);
+              }
+            }
+          );
+        });
+      });
+    }
+
+    document.getElementById("form-edit-employee").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const id = document.getElementById("edit-emp-id").value;
+      const nome = document.getElementById("edit-emp-name").value.trim();
+      const cpf = document.getElementById("edit-emp-cpf").value.trim();
+      const telefone = document.getElementById("edit-emp-phone").value.trim();
+      const email = document.getElementById("edit-emp-email").value.trim();
+      const dataContratacao = document.getElementById("edit-emp-hire-date").value;
+      const cargo = document.getElementById("edit-emp-role").value.trim();
+      const horaEntrada = document.getElementById("edit-emp-shift-start").value;
+      const horaSaida = document.getElementById("edit-emp-shift-end").value;
+      const intervaloMin = Number(document.getElementById("edit-emp-break-min").value || 0);
+      const jornadaDiariaMin = calcNetMinutes(horaEntrada, horaSaida, intervaloMin);
+
+      if (!nome || jornadaDiariaMin <= 0) {
+        showToast("Verifique o nome e os horários informados.", true);
+        return;
+      }
+
+      try {
+        await updateDoc(doc(db, "rh_colaboradores", id), {
+          nome,
+          cpf,
+          telefone,
+          email,
+          dataContratacao,
+          cargo,
+          horaEntrada,
+          horaSaida,
+          intervaloMin,
+          jornadaDiariaMin
+        });
+        closeModal("modal-edit-employee");
+        showToast("Ficha atualizada com sucesso!");
+      } catch (err) {
+        showToast("Erro ao atualizar ficha.", true);
+      }
+    });
+
+    function populateEmployeeSelects() {
+      const activeList = employees.filter(e => e.ativo !== false);
+      const optionsHtml = `<option value="">Selecione o colaborador...</option>` +
+        activeList.map(e => `<option value="${e.id}">${escapeHTML(e.nome)}</option>`).join("");
+
+      const absSel = document.getElementById("abs-emp-id");
+      const otSel = document.getElementById("ot-emp-id");
+      const prevAbs = absSel.value;
+      const prevOt = otSel.value;
+
+      absSel.innerHTML = optionsHtml;
+      otSel.innerHTML = optionsHtml;
+
+      if (activeList.some(e => e.id === prevAbs)) absSel.value = prevAbs;
+      if (activeList.some(e => e.id === prevOt)) otSel.value = prevOt;
+    }
+
+    /* ---------------------------------------------------------
+       9. ABA 2: FALTAS & ATESTADOS MÉDICOS
+    --------------------------------------------------------- */
+    document.getElementById("form-new-absence").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const empId = document.getElementById("abs-emp-id").value;
+      const emp = employees.find(x => x.id === empId);
+      if (!emp) {
+        showToast("Selecione um colaborador.", true);
+        return;
+      }
+
+      const tipo = document.getElementById("abs-type").value;
+      const data = document.getElementById("abs-date").value;
+      const dias = Math.max(1, Number(document.getElementById("abs-days").value || 1));
+      const motivo = document.getElementById("abs-reason").value.trim();
+
+      if (!data) {
+        showToast("Informe a data da ocorrência.", true);
+        return;
+      }
+
+      const btn = document.getElementById("btn-submit-absence");
+      btn.disabled = true;
+
+      try {
+        await addDoc(collection(db, "rh_faltas_atestados"), {
+          colaboradorId: emp.id,
+          colaboradorNome: emp.nome,
+          tipo,
+          data,
+          dias,
+          motivo,
+          criadoEm: new Date().toISOString()
+        });
+
+        document.getElementById("abs-days").value = "1";
+        document.getElementById("abs-reason").value = "";
+
+        const selectedMonth = document.getElementById("abs-month-filter").value;
+        if (data.slice(0, 7) !== selectedMonth) {
+          subscribeMonthlyData(data.slice(0, 7));
+        }
+
+        showToast("Ocorrência registrada!");
+      } catch (err) {
+        showToast("Erro ao salvar ocorrência.", true);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    function renderAbsencesList() {
+      const atestados = absences.filter(a => a.tipo === "atestado");
+      const faltas = absences.filter(a => a.tipo !== "atestado");
+
+      const diasAtestados = atestados.reduce((acc, a) => acc + Number(a.dias || 1), 0);
+      const diasFaltas = faltas.reduce((acc, a) => acc + Number(a.dias || 1), 0);
+
+      document.getElementById("abs-summary-atestados").textContent =
+        `${diasAtestados} ${diasAtestados === 1 ? "dia" : "dias"} (${atestados.length} reg.)`;
+      document.getElementById("abs-summary-faltas").textContent =
+        `${diasFaltas} ${diasFaltas === 1 ? "dia" : "dias"} (${faltas.length} reg.)`;
+
+      document.getElementById("abs-list-count").textContent = `${absences.length} registros`;
+      const listEl = document.getElementById("absences-list");
+
+      if (absences.length === 0) {
+        listEl.innerHTML = `<p class="py-8 text-center text-sm text-slate-400">Nenhuma falta ou atestado neste mês.</p>`;
+        return;
+      }
+
+      const badgeMap = {
+        atestado: { label: "Atestado Médico", cls: "bg-amber-50 text-amber-700 border border-amber-200/70" },
+        falta_injustificada: { label: "Falta Injustificada", cls: "bg-rose-50 text-rose-700 border border-rose-200/70" },
+        falta_justificada: { label: "Falta Justificada", cls: "bg-sky-50 text-sky-700 border border-sky-200/70" }
+      };
+
+      listEl.innerHTML = absences.map(item => {
+        const badge = badgeMap[item.tipo] || badgeMap.falta_injustificada;
+        const diasTxt = `${item.dias || 1} ${(item.dias || 1) === 1 ? "dia" : "dias"}`;
+
+        return `
+          <div class="py-3.5 flex items-start justify-between gap-2.5">
+            <div class="min-w-0 space-y-1">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-sm font-extrabold text-[#1E293B]">${escapeHTML(item.colaboradorNome)}</span>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-md ${badge.cls}">${badge.label}</span>
+              </div>
+              <p class="text-xs text-slate-500 tabular-nums">
+                Data: <strong class="text-[#1E293B]">${formatDateBR(item.data)}</strong> • Duração: <strong class="text-[#1E293B]">${diasTxt}</strong>
+              </p>
+              ${item.motivo ? `<p class="text-xs text-slate-500 italic">"${escapeHTML(item.motivo)}"</p>` : ""}
+            </div>
+
+            <button type="button" data-del-abs="${item.id}" class="shrink-0 px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold transition">
+              Excluir
+            </button>
+          </div>
+        `;
+      }).join("");
+
+      listEl.querySelectorAll("[data-del-abs]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = absences.find(a => a.id === btn.dataset.delAbs);
+          if (!item) return;
+          showConfirm(
+            "Excluir Registro",
+            `Apagar este registro de ${item.colaboradorNome} (${formatDateBR(item.data)})?`,
+            async () => {
+              try {
+                await deleteDoc(doc(db, "rh_faltas_atestados", item.id));
+                showToast("Registro removido.");
+              } catch (err) {
+                showToast("Erro ao excluir registro.", true);
+              }
+            }
+          );
+        });
+      });
+    }
+
+    /* ---------------------------------------------------------
+       10. ABA 3: HORAS EXTRAS (CÁLCULO AUTOMÁTICO PELA JORNADA)
+    --------------------------------------------------------- */
+    function recalculateOvertimePreview() {
+      const empId = document.getElementById("ot-emp-id").value;
+      const emp = employees.find(e => e.id === empId);
+
+      const banner = document.getElementById("ot-emp-shift-banner");
+      const startReal = document.getElementById("ot-actual-start").value;
+      const endReal = document.getElementById("ot-actual-end").value;
+      const breakReal = Number(document.getElementById("ot-actual-break").value || 0);
+
+      if (!emp) {
+        banner.classList.add("hidden");
+        document.getElementById("ot-preview-worked").textContent = "0h 00m";
+        document.getElementById("ot-preview-extra").textContent = "+ 0h 00m";
+        return { workedMins: 0, standardMins: 0, extraMins: 0 };
+      }
+
+      const standardMins = emp.jornadaDiariaMin || calcNetMinutes(emp.horaEntrada, emp.horaSaida, emp.intervaloMin);
+      banner.classList.remove("hidden");
+      document.getElementById("ot-banner-hours").textContent = `${emp.horaEntrada} às ${emp.horaSaida}`;
+      document.getElementById("ot-banner-workload").textContent = `Jornada: ${formatMinutesToHM(standardMins)}`;
+
+      const workedMins = (startReal && endReal) ? calcNetMinutes(startReal, endReal, breakReal) : 0;
+      const extraMins = Math.max(0, workedMins - standardMins);
+
+      document.getElementById("ot-preview-worked").textContent = formatMinutesToHM(workedMins);
+      const extraEl = document.getElementById("ot-preview-extra");
+      extraEl.textContent = `+ ${formatMinutesToHM(extraMins)}`;
+      extraEl.className = extraMins > 0
+        ? "text-base font-extrabold text-[#059669] tabular-nums"
+        : "text-base font-extrabold text-slate-400 tabular-nums";
+
+      return { workedMins, standardMins, extraMins };
+    }
+
+    // Quando selecionar o colaborador na aba Horas Extras, preenche automaticamente o horário base dele como ponto de partida
+    document.getElementById("ot-emp-id").addEventListener("change", () => {
+      const empId = document.getElementById("ot-emp-id").value;
+      const emp = employees.find(e => e.id === empId);
+      if (emp) {
+        document.getElementById("ot-actual-start").value = emp.horaEntrada || "09:00";
+        document.getElementById("ot-actual-end").value = emp.horaSaida || "18:00";
+        document.getElementById("ot-actual-break").value = emp.intervaloMin ?? 60;
+      }
+      recalculateOvertimePreview();
+    });
+
+    ["ot-actual-start", "ot-actual-end", "ot-actual-break"].forEach(id => {
+      document.getElementById(id).addEventListener("input", recalculateOvertimePreview);
+    });
+
+    document.getElementById("form-new-overtime").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const empId = document.getElementById("ot-emp-id").value;
+      const emp = employees.find(x => x.id === empId);
+      if (!emp) {
+        showToast("Selecione o colaborador.", true);
+        return;
+      }
+
+      const data = document.getElementById("ot-date").value;
+      const entradaReal = document.getElementById("ot-actual-start").value;
+      const saidaReal = document.getElementById("ot-actual-end").value;
+      const intervaloRealMin = Number(document.getElementById("ot-actual-break").value || 0);
+      const observacao = document.getElementById("ot-note").value.trim();
+
+      const { workedMins, standardMins, extraMins } = recalculateOvertimePreview();
+
+      if (!data || !entradaReal || !saidaReal) {
+        showToast("Preencha o dia e os horários trabalhados.", true);
+        return;
+      }
+
+      if (extraMins <= 0) {
+        showToast("O horário informado não ultrapassou a jornada padrão.", true);
+        return;
+      }
+
+      const btn = document.getElementById("btn-submit-overtime");
+      btn.disabled = true;
+
+      try {
+        await addDoc(collection(db, "rh_horas_extras"), {
+          colaboradorId: emp.id,
+          colaboradorNome: emp.nome,
+          data,
+          turnoPadrao: `${emp.horaEntrada} às ${emp.horaSaida}`,
+          jornadaPadraoMin: standardMins,
+          entradaReal,
+          saidaReal,
+          intervaloRealMin,
+          minutosTrabalhados: workedMins,
+          minutosExtras: extraMins,
+          observacao,
+          criadoEm: new Date().toISOString()
+        });
+
+        document.getElementById("ot-note").value = "";
+        const selectedMonth = document.getElementById("ot-month-filter").value;
+        if (data.slice(0, 7) !== selectedMonth) {
+          subscribeMonthlyData(data.slice(0, 7));
+        }
+
+        showToast(`+${formatMinutesToHM(extraMins)} de hora extra registrada!`);
+      } catch (err) {
+        showToast("Erro ao salvar hora extra.", true);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    function renderOvertimeSection() {
+      // 1. Consolidado mensal por colaborador
+      const byEmployee = {};
+      overtimes.forEach(ot => {
+        if (!byEmployee[ot.colaboradorId]) {
+          byEmployee[ot.colaboradorId] = {
+            id: ot.colaboradorId,
+            nome: ot.colaboradorNome,
+            totalExtrasMin: 0,
+            diasCount: 0
+          };
+        }
+        byEmployee[ot.colaboradorId].totalExtrasMin += Number(ot.minutosExtras || 0);
+        byEmployee[ot.colaboradorId].diasCount += 1;
+      });
+
+      const summaryArr = Object.values(byEmployee).sort((a, b) => b.totalExtrasMin - a.totalExtrasMin);
+      const grandTotalMin = summaryArr.reduce((acc, s) => acc + s.totalExtrasMin, 0);
+
+      document.getElementById("ot-month-grand-total").textContent = `Total Equipe: ${formatMinutesToHM(grandTotalMin)}`;
+      const summaryContainer = document.getElementById("ot-monthly-summary-list");
+
+      if (summaryArr.length === 0) {
+        summaryContainer.innerHTML = `
+          <div class="bg-white p-5 rounded-2xl border border-[#E2E8F0] text-center">
+            <p class="text-xs font-semibold text-slate-400">Nenhuma hora extra acumulada neste mês.</p>
+          </div>`;
+      } else {
+        summaryContainer.innerHTML = summaryArr.map(item => `
+          <div class="bg-white p-3.5 rounded-2xl border border-[#E2E8F0] flex items-center justify-between gap-2">
+            <div class="min-w-0">
+              <p class="text-sm font-extrabold text-[#1E293B] truncate">${escapeHTML(item.nome)}</p>
+              <p class="text-[11px] text-slate-400">${item.diasCount} ${item.diasCount === 1 ? "dia com hora extra" : "dias com hora extra"} no mês</p>
+            </div>
+            <span class="px-3 py-1.5 rounded-xl bg-emerald-50 text-[#059669] text-sm font-extrabold tabular-nums shrink-0">
+              + ${formatMinutesToHM(item.totalExtrasMin)}
+            </span>
+          </div>
+        `).join("");
+      }
+
+      // 2. Lista detalhada dia a dia
+      document.getElementById("ot-list-count").textContent = `${overtimes.length} ${overtimes.length === 1 ? "dia" : "dias"}`;
+      const listEl = document.getElementById("overtime-list");
+
+      if (overtimes.length === 0) {
+        listEl.innerHTML = `<p class="py-7 text-center text-sm text-slate-400">Nenhum lançamento de hora extra no período.</p>`;
+        return;
+      }
+
+      listEl.innerHTML = overtimes.map(ot => `
+        <div class="py-3.5 flex items-start justify-between gap-2.5">
+          <div class="min-w-0 space-y-1">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-sm font-extrabold text-[#1E293B]">${escapeHTML(ot.colaboradorNome)}</span>
+              <span class="text-xs font-extrabold px-2 py-0.5 rounded-md bg-emerald-50 text-[#059669] tabular-nums">
+                + ${formatMinutesToHM(ot.minutosExtras)}
+              </span>
+            </div>
+            <p class="text-xs text-slate-600 tabular-nums">
+              Dia: <strong class="text-[#1E293B]">${formatDateBR(ot.data)}</strong> • Real: <strong>${escapeHTML(ot.entradaReal)} às ${escapeHTML(ot.saidaReal)}</strong>
+              <span class="text-slate-400">(Padrão: ${escapeHTML(ot.turnoPadrao || "-")})</span>
+            </p>
+            ${ot.observacao ? `<p class="text-xs text-slate-500 italic">"${escapeHTML(ot.observacao)}"</p>` : ""}
+          </div>
+
+          <button type="button" data-del-ot="${ot.id}" class="shrink-0 px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold transition">
+            Excluir
+          </button>
+        </div>
+      `).join("");
+
+      listEl.querySelectorAll("[data-del-ot]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const ot = overtimes.find(o => o.id === btn.dataset.delOt);
+          if (!ot) return;
+          showConfirm(
+            "Excluir Hora Extra",
+            `Apagar +${formatMinutesToHM(ot.minutosExtras)} de ${ot.colaboradorNome} em ${formatDateBR(ot.data)}?`,
+            async () => {
+              try {
+                await deleteDoc(doc(db, "rh_horas_extras", ot.id));
+                showToast("Hora extra removida.");
+              } catch (err) {
+                showToast("Erro ao excluir registro.", true);
+              }
+            }
+          );
+        });
+      });
+    }
+
+    /* ---------------------------------------------------------
+       11. AJUSTES & EXPORTAÇÃO CSV
+    --------------------------------------------------------- */
+    document.getElementById("form-update-rh-pin").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const newPin = document.getElementById("new-rh-pin").value.trim();
+      if (!/^\d{4}$/.test(newPin)) {
+        showToast("O PIN deve ter exatamente 4 dígitos.", true);
+        return;
+      }
+
+      try {
+        await setDoc(doc(db, "config", "rh_admin"), {
+          pin: newPin,
+          empresaNome: rhConfig.empresaNome || "Rêve"
+        }, { merge: true });
+        e.target.reset();
+        showToast("PIN atualizado com sucesso!");
+      } catch (err) {
+        showToast("Erro ao salvar PIN.", true);
+      }
+    });
+
+    document.getElementById("btn-export-rh-csv").addEventListener("click", () => {
+      const month = document.getElementById("ot-month-filter").value || getCurrentMonthSP();
+      const lines = [];
+
+      lines.push("RESUMO DE HORAS EXTRAS E OCORRENCIAS - MES " + month);
+      lines.push("Colaborador;CPF;Cargo;Turno Padrao;Total Horas Extras (HH:MM);Total Minutos Extras;Dias Atestado;Dias Falta");
+
+      employees.forEach(emp => {
+        const empOtMin = overtimes
+          .filter(o => o.colaboradorId === emp.id)
+          .reduce((acc, o) => acc + Number(o.minutosExtras || 0), 0);
+
+        const empAtestados = absences
+          .filter(a => a.colaboradorId === emp.id && a.tipo === "atestado")
+          .reduce((acc, a) => acc + Number(a.dias || 1), 0);
+
+        const empFaltas = absences
+          .filter(a => a.colaboradorId === emp.id && a.tipo !== "atestado")
+          .reduce((acc, a) => acc + Number(a.dias || 1), 0);
+
+        lines.push([
+          `"${(emp.nome || "").replace(/"/g, '""')}"`,
+          `"${emp.cpf || ""}"`,
+          `"${(emp.cargo || "").replace(/"/g, '""')}"`,
+          `"${emp.horaEntrada || ""} as ${emp.horaSaida || ""}"`,
+          formatMinutesToHM(empOtMin),
+          empOtMin,
+          empAtestados,
+          empFaltas
+        ].join(";"));
+      });
+
+      const csvContent = "\uFEFF" + lines.join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `reve-gestao-pessoas-${month}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      showToast("Planilha exportada com sucesso!");
+    });
+
+    /* ---------------------------------------------------------
+       12. EVENTOS GERAIS DE INTERFACE
+    --------------------------------------------------------- */
+    applyCPFMask(document.getElementById("emp-cpf"));
+    applyPhoneMask(document.getElementById("emp-phone"));
+    applyCPFMask(document.getElementById("edit-emp-cpf"));
+    applyPhoneMask(document.getElementById("edit-emp-phone"));
+
+    document.querySelectorAll(".keypad-btn[data-key]").forEach(btn => {
+      btn.addEventListener("click", () => handleDigit(btn.dataset.key));
+    });
+
+    document.getElementById("btn-pin-back").addEventListener("click", () => {
+      if (pinBuffer.length > 0) {
+        pinBuffer = pinBuffer.slice(0, -1);
+        document.getElementById("pin-error").textContent = "";
+        updatePinDots();
+      }
+    });
+
+    document.getElementById("btn-pin-clear").addEventListener("click", () => {
+      pinBuffer = "";
+      document.getElementById("pin-error").textContent = "";
+      updatePinDots();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (document.getElementById("view-lock").classList.contains("hidden")) return;
+      if (/^\d$/.test(e.key)) handleDigit(e.key);
+      else if (e.key === "Backspace") {
+        pinBuffer = pinBuffer.slice(0, -1);
+        updatePinDots();
+      } else if (e.key === "Escape") {
+        pinBuffer = "";
+        updatePinDots();
+      }
+    });
+
+    document.getElementById("btn-logout").addEventListener("click", lockApp);
+
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+      btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+    });
+
+    document.getElementById("search-employee").addEventListener("input", renderEmployeesList);
+
+    document.getElementById("abs-month-filter").addEventListener("change", (e) => {
+      const m = e.target.value || getCurrentMonthSP();
+      subscribeMonthlyData(m);
+    });
+
+    document.getElementById("ot-month-filter").addEventListener("change", (e) => {
+      const m = e.target.value || getCurrentMonthSP();
+      subscribeMonthlyData(m);
+    });
+
+    document.querySelectorAll("[data-close-modal]").forEach(btn => {
+      btn.addEventListener("click", () => closeModal(btn.dataset.closeModal));
+    });
+
+    initFirestoreRH();
+  </script>
+</body>
+</html>
