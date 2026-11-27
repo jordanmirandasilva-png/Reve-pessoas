@@ -253,7 +253,7 @@
             <div class="bg-white p-4 rounded-2xl border border-[#E2E8F0]">
               <p class="text-xs font-semibold text-slate-500">Horas Extras (Mês)</p>
               <p id="kpi-month-overtime" class="text-2xl font-extrabold text-[#059669] tabular-nums mt-1">0h 00m</p>
-              <p id="kpi-month-absences" class="text-[11px] text-slate-400 mt-0.5">0 faltas/atestados</p>
+              <p id="kpi-month-absences" class="text-[11px] text-slate-400 mt-0.5">0 folgas pendentes</p>
             </div>
           </div>
 
@@ -295,7 +295,7 @@
               </div>
               <div>
                 <label for="emp-hire-date" class="block text-xs font-semibold text-slate-600 mb-1">Data Contratação *</label>
-                <input type="date" id="emp-hire-date" required class="w-full px-3 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-semibold outline-none focus:bg-white focus:border-[#1E293B]" />
+                <input type="date" id="emp-hire-date" required class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-semibold outline-none focus:bg-white focus:border-[#1E293B]" />
               </div>
             </div>
 
@@ -380,7 +380,7 @@
             <div class="grid grid-cols-2 gap-2.5">
               <div>
                 <label for="abs-type" class="block text-xs font-semibold text-slate-600 mb-1">Tipo de Ocorrência *</label>
-                <select id="abs-type" required class="w-full px-3 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-bold text-[#1E293B] outline-none focus:bg-white focus:border-[#1E293B]">
+                <select id="abs-type" required class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-bold text-[#1E293B] outline-none focus:bg-white focus:border-[#1E293B]">
                   <option value="atestado">Atestado Médico</option>
                   <option value="falta_injustificada">Falta Injustificada</option>
                   <option value="falta_justificada">Falta Justificada</option>
@@ -433,7 +433,7 @@
         </div>
 
         <!-- =====================================================
-             ABA 3: HORAS EXTRAS (CÁLCULO AUTOMÁTICO PELA JORNADA)
+             ABA 3: HORAS EXTRAS, DOMINGOS & FERIADOS
         ====================================================== -->
         <div id="tab-horas" class="hidden space-y-4">
           <!-- Seletor de Mês -->
@@ -442,10 +442,10 @@
             <input type="month" id="ot-month-filter" class="text-sm font-bold text-[#1E293B] bg-slate-100 px-3 py-1.5 rounded-xl border-0 focus:ring-2 focus:ring-[#1E293B] outline-none" />
           </div>
 
-          <!-- Formulário Inteligente de Horas Extras -->
+          <!-- Formulário Inteligente de Horas Extras / Domingo / Feriado -->
           <form id="form-new-overtime" class="bg-white p-4 rounded-2xl border border-[#E2E8F0] space-y-3">
             <div class="flex items-center justify-between">
-              <h3 class="text-sm font-extrabold text-[#1E293B]">Lançar Dia com Hora Extra</h3>
+              <h3 class="text-sm font-extrabold text-[#1E293B]">Lançar Hora Extra / Domingo / Feriado</h3>
               <span class="text-[11px] font-bold text-[#059669] bg-emerald-50 px-2 py-0.5 rounded-md">Cálculo Automático</span>
             </div>
 
@@ -458,9 +458,18 @@
               </div>
 
               <div>
-                <label for="ot-date" class="block text-xs font-semibold text-slate-600 mb-1">Dia da Hora Extra *</label>
+                <label for="ot-date" class="block text-xs font-semibold text-slate-600 mb-1">Data *</label>
                 <input type="date" id="ot-date" required class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-semibold outline-none focus:bg-white focus:border-[#1E293B]" />
               </div>
+            </div>
+
+            <!-- Tipo de Dia (Dia Normal vs. Domingo/Feriado com Direito a Folga) -->
+            <div>
+              <label for="ot-day-type" class="block text-xs font-semibold text-slate-600 mb-1">Tipo de Dia Trabalhado *</label>
+              <select id="ot-day-type" required class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-bold text-[#1E293B] outline-none focus:bg-white focus:border-[#1E293B]">
+                <option value="normal">Dia Normal (calcula o que passar do turno padrão)</option>
+                <option value="domingo_feriado">Domingo ou Feriado (gera direito a Folga / 100%)</option>
+              </select>
             </div>
 
             <!-- Cartão Informativo do Turno Cadastrado do Colaborador -->
@@ -487,33 +496,46 @@
                 </div>
               </div>
 
-              <!-- Preview Ao Vivo do Cálculo de Horas Extras -->
-              <div class="pt-2 border-t border-emerald-200/60 flex items-center justify-between">
+              <!-- Preview Ao Vivo do Cálculo -->
+              <div class="pt-2 border-t border-emerald-200/60 flex items-center justify-between gap-2">
                 <div>
                   <p class="text-[11px] font-semibold text-slate-500">Trabalhado no dia: <strong id="ot-preview-worked" class="text-[#1E293B] tabular-nums">0h 00m</strong></p>
+                  <p id="ot-preview-folga-badge" class="hidden text-[11px] font-bold text-indigo-700 mt-0.5">+ Gera 1 Folga Compensatória</p>
                 </div>
                 <div class="text-right">
-                  <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Hora Extra Apurada</span>
+                  <span id="ot-preview-label" class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Hora Extra Apurada</span>
                   <span id="ot-preview-extra" class="text-base font-extrabold text-[#059669] tabular-nums">+ 0h 00m</span>
                 </div>
               </div>
             </div>
 
-            <div>
-              <label for="ot-note" class="block text-xs font-semibold text-slate-600 mb-1">Motivo / Atividade (opcional)</label>
-              <input type="text" id="ot-note" maxlength="80" placeholder="Ex: Fechamento de vitrine / Balanço" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm outline-none focus:bg-white focus:border-[#1E293B]" />
+            <!-- Status da Compensação / Folga / Pagamento -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div>
+                <label for="ot-status" class="block text-xs font-semibold text-slate-600 mb-1">Situação (Folga / Pagamento)</label>
+                <select id="ot-status" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-bold text-[#1E293B] outline-none focus:bg-white focus:border-[#1E293B]">
+                  <option value="pendente">Pendente (a compensar / pagar)</option>
+                  <option value="folga_dada">Folga já concedida</option>
+                  <option value="pago">Pago em folha / acerto</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="ot-note" class="block text-xs font-semibold text-slate-600 mb-1">Observação (folga, data, motivo)</label>
+                <input type="text" id="ot-note" maxlength="100" placeholder="Ex: Folga agendada p/ 05/12" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm outline-none focus:bg-white focus:border-[#1E293B]" />
+              </div>
             </div>
 
             <button type="submit" id="btn-submit-overtime" class="w-full py-3.5 px-4 rounded-xl bg-[#059669] hover:bg-emerald-700 active:scale-[0.99] text-white font-bold text-xs uppercase tracking-wider shadow-sm transition">
-              + Registrar Hora Extra
+              + Registrar Lançamento
             </button>
           </form>
 
-          <!-- Consolidado Mensal de Horas Extras por Colaborador -->
+          <!-- Consolidado Mensal de Horas Extras & Folgas por Colaborador -->
           <div class="space-y-2.5">
             <div class="flex items-center justify-between px-1">
-              <h3 class="text-sm font-extrabold text-[#1E293B]">Total Acumulado no Mês</h3>
-              <span id="ot-month-grand-total" class="text-xs font-extrabold text-[#059669] tabular-nums">Total Equipe: 0h 00m</span>
+              <h3 class="text-sm font-extrabold text-[#1E293B]">Resumo do Mês por Pessoa</h3>
+              <span id="ot-month-grand-total" class="text-xs font-extrabold text-[#059669] tabular-nums">Equipe: 0h 00m</span>
             </div>
             <div id="ot-monthly-summary-list" class="space-y-2">
               <!-- Cards resumidos por colaborador no mês -->
@@ -549,7 +571,7 @@
 
           <div class="bg-white p-4 rounded-2xl border border-[#E2E8F0] space-y-2.5">
             <h3 class="text-sm font-extrabold text-[#1E293B]">Exportar Relatório Mensal (CSV / Excel)</h3>
-            <p class="text-xs text-slate-500">Gera planilha consolidada de colaboradores, faltas, atestados e horas extras do mês selecionado.</p>
+            <p class="text-xs text-slate-500">Gera planilha consolidada de colaboradores, faltas, atestados, horas extras e folgas de domingos/feriados.</p>
             <button type="button" id="btn-export-rh-csv" class="w-full py-3 px-4 rounded-xl bg-[#059669] hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider transition">
               Exportar Planilha do Mês
             </button>
@@ -594,6 +616,48 @@
   <!-- =========================================================
        MODAIS CUSTOMIZADOS
   ========================================================== -->
+
+  <!-- Modal Dar Baixa / Anotar Folga ou Pagamento (Horas Extras / Domingos / Feriados) -->
+  <div id="modal-edit-overtime" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-4">
+    <div class="bg-white w-full max-w-md rounded-3xl p-5 shadow-xl space-y-4 animate-fade-in">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Controle de Compensação</p>
+          <h3 id="edit-ot-title" class="text-base font-extrabold text-[#1E293B]">Anotar Folga / Pagamento</h3>
+        </div>
+        <button type="button" data-close-modal="modal-edit-overtime" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-bold">&times;</button>
+      </div>
+
+      <form id="form-edit-overtime" class="space-y-3">
+        <input type="hidden" id="edit-ot-id" />
+
+        <div>
+          <label for="edit-ot-status" class="block text-xs font-semibold text-slate-600 mb-1">Situação Atual *</label>
+          <select id="edit-ot-status" required class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm font-bold text-[#1E293B] outline-none focus:bg-white focus:border-[#1E293B]">
+            <option value="pendente">Pendente (ainda não folgou / não recebeu)</option>
+            <option value="folga_dada">Folga já concedida</option>
+            <option value="pago">Pago em dinheiro / folha</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="edit-ot-note" class="block text-xs font-semibold text-slate-600 mb-1">Observação (ex: dia da folga dada ou data do pagamento)</label>
+          <textarea
+            id="edit-ot-note"
+            rows="3"
+            maxlength="140"
+            placeholder="Ex: Folgou na quarta-feira dia 04/12 em troca do domingo trabalhado."
+            class="w-full px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm outline-none focus:bg-white focus:border-[#1E293B]"
+          ></textarea>
+        </div>
+
+        <div class="flex gap-2.5 pt-2">
+          <button type="button" data-close-modal="modal-edit-overtime" class="flex-1 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">Cancelar</button>
+          <button type="submit" class="flex-1 py-3 rounded-xl bg-[#059669] hover:bg-emerald-700 text-white text-xs font-bold">Salvar Anotação</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- Modal Editar Colaborador -->
   <div id="modal-edit-employee" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-4">
@@ -699,7 +763,6 @@
       collection,
       doc,
       getDoc,
-      getDocs,
       setDoc,
       addDoc,
       updateDoc,
@@ -744,8 +807,8 @@
     };
 
     let employees = [];       // Coleção: rh_colaboradores
-    let absences = [];        // Coleção: rh_faltas_atestados (filtrada por mês)
-    let overtimes = [];       // Coleção: rh_horas_extras (filtrada por mês)
+    let absences = [];        // Coleção: rh_faltas_atestados
+    let overtimes = [];       // Coleção: rh_horas_extras
 
     let isUnlocked = false;
     let pinBuffer = "";
@@ -788,14 +851,12 @@
         .replace(/'/g, "&#39;");
     }
 
-    // Converte "HH:MM" em minutos desde 00:00
     function timeToMinutes(hhmm) {
       if (!hhmm || !hhmm.includes(":")) return 0;
       const [h, m] = hhmm.split(":").map(Number);
       return (h || 0) * 60 + (m || 0);
     }
 
-    // Calcula minutos líquidos trabalhados (suporta virada de madrugada)
     function calcNetMinutes(startHHMM, endHHMM, breakMinutes) {
       const start = timeToMinutes(startHHMM);
       let end = timeToMinutes(endHHMM);
@@ -804,7 +865,6 @@
       return Math.max(0, gross - (Number(breakMinutes) || 0));
     }
 
-    // Formata minutos inteiros como "2h 30m"
     function formatMinutesToHM(totalMinutes) {
       const mins = Math.max(0, Math.round(Number(totalMinutes) || 0));
       const h = Math.floor(mins / 60);
@@ -812,7 +872,6 @@
       return `${h}h ${String(m).padStart(2, "0")}m`;
     }
 
-    // Máscara de CPF: 000.000.000-00
     function applyCPFMask(inputEl) {
       inputEl.addEventListener("input", () => {
         let v = inputEl.value.replace(/\D/g, "").slice(0, 11);
@@ -823,7 +882,6 @@
       });
     }
 
-    // Máscara de Telefone: (00) 00000-0000
     function applyPhoneMask(inputEl) {
       inputEl.addEventListener("input", () => {
         let v = inputEl.value.replace(/\D/g, "").slice(0, 11);
@@ -1136,9 +1194,12 @@
       const totalOtMinutes = overtimes.reduce((acc, item) => acc + Number(item.minutosExtras || 0), 0);
       document.getElementById("kpi-month-overtime").textContent = formatMinutesToHM(totalOtMinutes);
 
-      const totalAbsDays = absences.reduce((acc, item) => acc + Number(item.dias || 1), 0);
+      const pendingFolgas = overtimes.filter(
+        item => item.tipoDia === "domingo_feriado" && (item.status || "pendente") === "pendente"
+      ).length;
+
       document.getElementById("kpi-month-absences").textContent =
-        `${totalAbsDays} ${totalAbsDays === 1 ? "dia afastado" : "dias afastados"} no mês`;
+        `${pendingFolgas} ${pendingFolgas === 1 ? "folga pendente" : "folgas pendentes"} (dom/fer)`;
     }
 
     /* ---------------------------------------------------------
@@ -1277,7 +1338,6 @@
               </button>
             </div>
 
-            <!-- Dados Cadastrais -->
             <div class="grid grid-cols-2 gap-y-1.5 gap-x-2 text-xs text-slate-600 bg-[#F8FAFC] p-3 rounded-xl border border-slate-100">
               <p><span class="text-slate-400">CPF:</span> <strong class="text-[#1E293B] tabular-nums">${escapeHTML(emp.cpf || "-")}</strong></p>
               <p><span class="text-slate-400">Tel:</span> <strong class="text-[#1E293B] tabular-nums">${escapeHTML(emp.telefone || "-")}</strong></p>
@@ -1286,7 +1346,6 @@
               <p><span class="text-slate-400">Carga:</span> <strong class="text-[#059669] tabular-nums">${formatMinutesToHM(netMins)}/dia</strong></p>
             </div>
 
-            <!-- Horário de Trabalho Cadastrado -->
             <div class="flex items-center justify-between text-xs px-1">
               <span class="text-slate-500">
                 Turno: <strong class="text-[#1E293B] tabular-nums">${escapeHTML(emp.horaEntrada || "09:00")} às ${escapeHTML(emp.horaSaida || "18:00")}</strong>
@@ -1306,7 +1365,6 @@
         `;
       }).join("");
 
-      // Eventos dos botões de cada card
       container.querySelectorAll("[data-edit-emp]").forEach(btn => {
         btn.addEventListener("click", () => {
           const emp = employees.find(e => e.id === btn.dataset.editEmp);
@@ -1539,22 +1597,26 @@
     }
 
     /* ---------------------------------------------------------
-       10. ABA 3: HORAS EXTRAS (CÁLCULO AUTOMÁTICO PELA JORNADA)
+       10. ABA 3: HORAS EXTRAS, DOMINGOS, FERIADOS & FOLGAS
     --------------------------------------------------------- */
     function recalculateOvertimePreview() {
       const empId = document.getElementById("ot-emp-id").value;
       const emp = employees.find(e => e.id === empId);
+      const dayType = document.getElementById("ot-day-type").value; // 'normal' | 'domingo_feriado'
 
       const banner = document.getElementById("ot-emp-shift-banner");
       const startReal = document.getElementById("ot-actual-start").value;
       const endReal = document.getElementById("ot-actual-end").value;
       const breakReal = Number(document.getElementById("ot-actual-break").value || 0);
+      const folgaBadge = document.getElementById("ot-preview-folga-badge");
+      const previewLabel = document.getElementById("ot-preview-label");
 
       if (!emp) {
         banner.classList.add("hidden");
+        folgaBadge.classList.add("hidden");
         document.getElementById("ot-preview-worked").textContent = "0h 00m";
         document.getElementById("ot-preview-extra").textContent = "+ 0h 00m";
-        return { workedMins: 0, standardMins: 0, extraMins: 0 };
+        return { workedMins: 0, standardMins: 0, extraMins: 0, dayType };
       }
 
       const standardMins = emp.jornadaDiariaMin || calcNetMinutes(emp.horaEntrada, emp.horaSaida, emp.intervaloMin);
@@ -1563,7 +1625,20 @@
       document.getElementById("ot-banner-workload").textContent = `Jornada: ${formatMinutesToHM(standardMins)}`;
 
       const workedMins = (startReal && endReal) ? calcNetMinutes(startReal, endReal, breakReal) : 0;
-      const extraMins = Math.max(0, workedMins - standardMins);
+
+      // Se for Domingo ou Feriado, TODO o tempo trabalhado no dia conta (100% + direito a 1 folga)
+      // Se for dia normal, conta o que ultrapassar a jornada padrão
+      const extraMins = dayType === "domingo_feriado"
+        ? workedMins
+        : Math.max(0, workedMins - standardMins);
+
+      if (dayType === "domingo_feriado") {
+        folgaBadge.classList.remove("hidden");
+        previewLabel.textContent = "Total Dom/Feriado";
+      } else {
+        folgaBadge.classList.add("hidden");
+        previewLabel.textContent = "Hora Extra Apurada";
+      }
 
       document.getElementById("ot-preview-worked").textContent = formatMinutesToHM(workedMins);
       const extraEl = document.getElementById("ot-preview-extra");
@@ -1572,10 +1647,9 @@
         ? "text-base font-extrabold text-[#059669] tabular-nums"
         : "text-base font-extrabold text-slate-400 tabular-nums";
 
-      return { workedMins, standardMins, extraMins };
+      return { workedMins, standardMins, extraMins, dayType };
     }
 
-    // Quando selecionar o colaborador na aba Horas Extras, preenche automaticamente o horário base dele como ponto de partida
     document.getElementById("ot-emp-id").addEventListener("change", () => {
       const empId = document.getElementById("ot-emp-id").value;
       const emp = employees.find(e => e.id === empId);
@@ -1586,6 +1660,21 @@
       }
       recalculateOvertimePreview();
     });
+
+    // Se escolher uma data que seja domingo no calendário, sugere automaticamente "Domingo ou Feriado"
+    document.getElementById("ot-date").addEventListener("change", (e) => {
+      const val = e.target.value;
+      if (val && val.length === 10) {
+        const [y, m, d] = val.split("-").map(Number);
+        const dt = new Date(y, m - 1, d);
+        if (dt.getDay() === 0) {
+          document.getElementById("ot-day-type").value = "domingo_feriado";
+          recalculateOvertimePreview();
+        }
+      }
+    });
+
+    document.getElementById("ot-day-type").addEventListener("change", recalculateOvertimePreview);
 
     ["ot-actual-start", "ot-actual-end", "ot-actual-break"].forEach(id => {
       document.getElementById(id).addEventListener("input", recalculateOvertimePreview);
@@ -1604,17 +1693,23 @@
       const entradaReal = document.getElementById("ot-actual-start").value;
       const saidaReal = document.getElementById("ot-actual-end").value;
       const intervaloRealMin = Number(document.getElementById("ot-actual-break").value || 0);
+      const status = document.getElementById("ot-status").value || "pendente";
       const observacao = document.getElementById("ot-note").value.trim();
 
-      const { workedMins, standardMins, extraMins } = recalculateOvertimePreview();
+      const { workedMins, standardMins, extraMins, dayType } = recalculateOvertimePreview();
 
       if (!data || !entradaReal || !saidaReal) {
-        showToast("Preencha o dia e os horários trabalhados.", true);
+        showToast("Preencha a data e os horários trabalhados.", true);
         return;
       }
 
       if (extraMins <= 0) {
-        showToast("O horário informado não ultrapassou a jornada padrão.", true);
+        showToast(
+          dayType === "domingo_feriado"
+            ? "Informe o horário trabalhado no domingo/feriado."
+            : "O horário informado não ultrapassou a jornada padrão.",
+          true
+        );
         return;
       }
 
@@ -1626,6 +1721,7 @@
           colaboradorId: emp.id,
           colaboradorNome: emp.nome,
           data,
+          tipoDia: dayType,
           turnoPadrao: `${emp.horaEntrada} às ${emp.horaSaida}`,
           jornadaPadraoMin: standardMins,
           entradaReal,
@@ -1633,26 +1729,33 @@
           intervaloRealMin,
           minutosTrabalhados: workedMins,
           minutosExtras: extraMins,
+          status,
           observacao,
           criadoEm: new Date().toISOString()
         });
 
         document.getElementById("ot-note").value = "";
+        document.getElementById("ot-status").value = "pendente";
+
         const selectedMonth = document.getElementById("ot-month-filter").value;
         if (data.slice(0, 7) !== selectedMonth) {
           subscribeMonthlyData(data.slice(0, 7));
         }
 
-        showToast(`+${formatMinutesToHM(extraMins)} de hora extra registrada!`);
+        showToast(
+          dayType === "domingo_feriado"
+            ? `Domingo/Feriado registrado (+1 folga / ${formatMinutesToHM(extraMins)})!`
+            : `+${formatMinutesToHM(extraMins)} de hora extra registrada!`
+        );
       } catch (err) {
-        showToast("Erro ao salvar hora extra.", true);
+        showToast("Erro ao salvar lançamento.", true);
       } finally {
         btn.disabled = false;
       }
     });
 
     function renderOvertimeSection() {
-      // 1. Consolidado mensal por colaborador
+      // 1. Consolidado mensal por colaborador (Horas Extras + Domingos/Feriados + Folgas Pendentes)
       const byEmployee = {};
       overtimes.forEach(ot => {
         if (!byEmployee[ot.colaboradorId]) {
@@ -1660,30 +1763,42 @@
             id: ot.colaboradorId,
             nome: ot.colaboradorNome,
             totalExtrasMin: 0,
-            diasCount: 0
+            diasCount: 0,
+            domFeriadoCount: 0,
+            folgasPendentes: 0
           };
         }
         byEmployee[ot.colaboradorId].totalExtrasMin += Number(ot.minutosExtras || 0);
         byEmployee[ot.colaboradorId].diasCount += 1;
+        if (ot.tipoDia === "domingo_feriado") {
+          byEmployee[ot.colaboradorId].domFeriadoCount += 1;
+          if ((ot.status || "pendente") === "pendente") {
+            byEmployee[ot.colaboradorId].folgasPendentes += 1;
+          }
+        }
       });
 
       const summaryArr = Object.values(byEmployee).sort((a, b) => b.totalExtrasMin - a.totalExtrasMin);
       const grandTotalMin = summaryArr.reduce((acc, s) => acc + s.totalExtrasMin, 0);
 
-      document.getElementById("ot-month-grand-total").textContent = `Total Equipe: ${formatMinutesToHM(grandTotalMin)}`;
+      document.getElementById("ot-month-grand-total").textContent = `Equipe: ${formatMinutesToHM(grandTotalMin)}`;
       const summaryContainer = document.getElementById("ot-monthly-summary-list");
 
       if (summaryArr.length === 0) {
         summaryContainer.innerHTML = `
           <div class="bg-white p-5 rounded-2xl border border-[#E2E8F0] text-center">
-            <p class="text-xs font-semibold text-slate-400">Nenhuma hora extra acumulada neste mês.</p>
+            <p class="text-xs font-semibold text-slate-400">Nenhuma hora extra ou domingo/feriado neste mês.</p>
           </div>`;
       } else {
         summaryContainer.innerHTML = summaryArr.map(item => `
           <div class="bg-white p-3.5 rounded-2xl border border-[#E2E8F0] flex items-center justify-between gap-2">
             <div class="min-w-0">
               <p class="text-sm font-extrabold text-[#1E293B] truncate">${escapeHTML(item.nome)}</p>
-              <p class="text-[11px] text-slate-400">${item.diasCount} ${item.diasCount === 1 ? "dia com hora extra" : "dias com hora extra"} no mês</p>
+              <p class="text-[11px] text-slate-500 mt-0.5">
+                ${item.diasCount} ${item.diasCount === 1 ? "dia" : "dias"}
+                ${item.domFeriadoCount > 0 ? `• <strong class="text-indigo-700">${item.domFeriadoCount} dom/feriado</strong>` : ""}
+                ${item.folgasPendentes > 0 ? `• <strong class="text-amber-700">${item.folgasPendentes} ${item.folgasPendentes === 1 ? "folga pendente" : "folgas pendentes"}</strong>` : ""}
+              </p>
             </div>
             <span class="px-3 py-1.5 rounded-xl bg-emerald-50 text-[#059669] text-sm font-extrabold tabular-nums shrink-0">
               + ${formatMinutesToHM(item.totalExtrasMin)}
@@ -1692,48 +1807,87 @@
         `).join("");
       }
 
-      // 2. Lista detalhada dia a dia
+      // 2. Lista detalhada dia a dia com status de folga/pagamento e observação
       document.getElementById("ot-list-count").textContent = `${overtimes.length} ${overtimes.length === 1 ? "dia" : "dias"}`;
       const listEl = document.getElementById("overtime-list");
 
       if (overtimes.length === 0) {
-        listEl.innerHTML = `<p class="py-7 text-center text-sm text-slate-400">Nenhum lançamento de hora extra no período.</p>`;
+        listEl.innerHTML = `<p class="py-7 text-center text-sm text-slate-400">Nenhum lançamento no período.</p>`;
         return;
       }
 
-      listEl.innerHTML = overtimes.map(ot => `
-        <div class="py-3.5 flex items-start justify-between gap-2.5">
-          <div class="min-w-0 space-y-1">
-            <div class="flex items-center gap-2 flex-wrap">
-              <span class="text-sm font-extrabold text-[#1E293B]">${escapeHTML(ot.colaboradorNome)}</span>
-              <span class="text-xs font-extrabold px-2 py-0.5 rounded-md bg-emerald-50 text-[#059669] tabular-nums">
+      const statusMeta = {
+        pendente: { label: "Pendente", cls: "bg-amber-50 text-amber-700 border border-amber-200/80" },
+        folga_dada: { label: "Folga Dada ✓", cls: "bg-emerald-50 text-[#059669] border border-emerald-200/80" },
+        pago: { label: "Pago ✓", cls: "bg-sky-50 text-sky-700 border border-sky-200/80" }
+      };
+
+      listEl.innerHTML = overtimes.map(ot => {
+        const isDomFer = ot.tipoDia === "domingo_feriado";
+        const st = statusMeta[ot.status] || statusMeta.pendente;
+
+        return `
+          <div class="py-3.5 space-y-2">
+            <div class="flex items-start justify-between gap-2">
+              <div class="min-w-0 space-y-1">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="text-sm font-extrabold text-[#1E293B]">${escapeHTML(ot.colaboradorNome)}</span>
+                  ${isDomFer ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200/80">Dom / Feriado</span>` : ""}
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-md ${st.cls}">${st.label}</span>
+                </div>
+
+                <p class="text-xs text-slate-600 tabular-nums">
+                  Dia: <strong class="text-[#1E293B]">${formatDateBR(ot.data)}</strong> • Real: <strong>${escapeHTML(ot.entradaReal)} às ${escapeHTML(ot.saidaReal)}</strong>
+                  <span class="text-slate-400">(${isDomFer ? "Direito a folga" : `Padrão: ${escapeHTML(ot.turnoPadrao || "-")}`})</span>
+                </p>
+              </div>
+
+              <span class="text-xs font-extrabold px-2.5 py-1 rounded-lg bg-emerald-50 text-[#059669] tabular-nums shrink-0">
                 + ${formatMinutesToHM(ot.minutosExtras)}
               </span>
             </div>
-            <p class="text-xs text-slate-600 tabular-nums">
-              Dia: <strong class="text-[#1E293B]">${formatDateBR(ot.data)}</strong> • Real: <strong>${escapeHTML(ot.entradaReal)} às ${escapeHTML(ot.saidaReal)}</strong>
-              <span class="text-slate-400">(Padrão: ${escapeHTML(ot.turnoPadrao || "-")})</span>
-            </p>
-            ${ot.observacao ? `<p class="text-xs text-slate-500 italic">"${escapeHTML(ot.observacao)}"</p>` : ""}
-          </div>
 
-          <button type="button" data-del-ot="${ot.id}" class="shrink-0 px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold transition">
-            Excluir
-          </button>
-        </div>
-      `).join("");
+            ${ot.observacao ? `
+              <div class="px-3 py-2 rounded-xl bg-slate-50 border border-slate-200/70 text-xs text-slate-600">
+                <span class="font-bold text-slate-500">Obs:</span> ${escapeHTML(ot.observacao)}
+              </div>
+            ` : ""}
+
+            <div class="flex items-center justify-end gap-2 pt-0.5">
+              <button type="button" data-edit-ot="${ot.id}" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-[#1E293B] text-xs font-bold transition">
+                Dar Baixa / Anotar
+              </button>
+              <button type="button" data-del-ot="${ot.id}" class="px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold transition">
+                Excluir
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      listEl.querySelectorAll("[data-edit-ot]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const ot = overtimes.find(o => o.id === btn.dataset.editOt);
+          if (!ot) return;
+          document.getElementById("edit-ot-id").value = ot.id;
+          document.getElementById("edit-ot-title").textContent = `${ot.colaboradorNome} • ${formatDateBR(ot.data)}`;
+          document.getElementById("edit-ot-status").value = ot.status || "pendente";
+          document.getElementById("edit-ot-note").value = ot.observacao || "";
+          openModal("modal-edit-overtime");
+        });
+      });
 
       listEl.querySelectorAll("[data-del-ot]").forEach(btn => {
         btn.addEventListener("click", () => {
           const ot = overtimes.find(o => o.id === btn.dataset.delOt);
           if (!ot) return;
           showConfirm(
-            "Excluir Hora Extra",
+            "Excluir Lançamento",
             `Apagar +${formatMinutesToHM(ot.minutosExtras)} de ${ot.colaboradorNome} em ${formatDateBR(ot.data)}?`,
             async () => {
               try {
                 await deleteDoc(doc(db, "rh_horas_extras", ot.id));
-                showToast("Hora extra removida.");
+                showToast("Lançamento removido.");
               } catch (err) {
                 showToast("Erro ao excluir registro.", true);
               }
@@ -1742,6 +1896,27 @@
         });
       });
     }
+
+    document.getElementById("form-edit-overtime").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const id = document.getElementById("edit-ot-id").value;
+      const status = document.getElementById("edit-ot-status").value;
+      const observacao = document.getElementById("edit-ot-note").value.trim();
+
+      if (!id) return;
+
+      try {
+        await updateDoc(doc(db, "rh_horas_extras", id), {
+          status,
+          observacao,
+          atualizadoEm: new Date().toISOString()
+        });
+        closeModal("modal-edit-overtime");
+        showToast("Status e observação atualizados!");
+      } catch (err) {
+        showToast("Erro ao salvar anotação.", true);
+      }
+    });
 
     /* ---------------------------------------------------------
        11. AJUSTES & EXPORTAÇÃO CSV
@@ -1770,13 +1945,14 @@
       const month = document.getElementById("ot-month-filter").value || getCurrentMonthSP();
       const lines = [];
 
-      lines.push("RESUMO DE HORAS EXTRAS E OCORRENCIAS - MES " + month);
-      lines.push("Colaborador;CPF;Cargo;Turno Padrao;Total Horas Extras (HH:MM);Total Minutos Extras;Dias Atestado;Dias Falta");
+      lines.push("RESUMO MENSAL DE RH - MES " + month);
+      lines.push("Colaborador;CPF;Cargo;Turno Padrao;Total Horas Extras;Dom/Feriados Trabalhados;Folgas Pendentes;Dias Atestado;Dias Falta");
 
       employees.forEach(emp => {
-        const empOtMin = overtimes
-          .filter(o => o.colaboradorId === emp.id)
-          .reduce((acc, o) => acc + Number(o.minutosExtras || 0), 0);
+        const empOts = overtimes.filter(o => o.colaboradorId === emp.id);
+        const empOtMin = empOts.reduce((acc, o) => acc + Number(o.minutosExtras || 0), 0);
+        const domFeriados = empOts.filter(o => o.tipoDia === "domingo_feriado").length;
+        const folgasPend = empOts.filter(o => o.tipoDia === "domingo_feriado" && (o.status || "pendente") === "pendente").length;
 
         const empAtestados = absences
           .filter(a => a.colaboradorId === emp.id && a.tipo === "atestado")
@@ -1792,9 +1968,28 @@
           `"${(emp.cargo || "").replace(/"/g, '""')}"`,
           `"${emp.horaEntrada || ""} as ${emp.horaSaida || ""}"`,
           formatMinutesToHM(empOtMin),
-          empOtMin,
+          domFeriados,
+          folgasPend,
           empAtestados,
           empFaltas
+        ].join(";"));
+      });
+
+      lines.push("");
+      lines.push("DETALHAMENTO DE HORAS EXTRAS, DOMINGOS E FERIADOS");
+      lines.push("Data;Colaborador;Tipo Dia;Entrada;Saida;Horas Apuradas;Situacao;Observacao");
+
+      const statusLabels = { pendente: "Pendente", folga_dada: "Folga Dada", pago: "Pago" };
+      overtimes.forEach(ot => {
+        lines.push([
+          formatDateBR(ot.data),
+          `"${(ot.colaboradorNome || "").replace(/"/g, '""')}"`,
+          ot.tipoDia === "domingo_feriado" ? "Domingo / Feriado" : "Dia Normal",
+          ot.entradaReal || "",
+          ot.saidaReal || "",
+          formatMinutesToHM(ot.minutosExtras),
+          statusLabels[ot.status] || "Pendente",
+          `"${(ot.observacao || "").replace(/"/g, '""')}"`
         ].join(";"));
       });
 
